@@ -1,4 +1,4 @@
-package by.jwd.lemesheuski.hostel.controller.command.impl;
+package by.jwd.lemesheuski.hostel.controller.command.impl.get;
 
 import by.jwd.lemesheuski.hostel.controller.command.CommandException;
 import by.jwd.lemesheuski.hostel.controller.command.ICommand;
@@ -7,9 +7,16 @@ import by.jwd.lemesheuski.hostel.controller.command_helper.JspPageName;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class NoSuchCommand implements ICommand {
+public class Profile implements ICommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        return JspPageName.ERROR_PAGE;
+        String role = (String)request.getSession().getAttribute("role");
+        if(role!=null){
+            request.setAttribute("role", role);
+            return JspPageName.PROFILE_PAGE;
+        }else{
+            return JspPageName.MAIN_PAGE;
+        }
+
     }
 }

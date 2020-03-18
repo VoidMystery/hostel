@@ -9,7 +9,7 @@
 </head>
 <body>
 ${requestScope.message}
-<form action="controller" method="post">
+<form action="controller" method="post" >
     <input type="hidden" name="command" value="sign_up" />
     <input type="text"  placeholder="login" name="login" value=""/>
     <input type="password" placeholder="password" name="password" value=""/>

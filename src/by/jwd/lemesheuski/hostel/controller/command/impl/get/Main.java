@@ -1,14 +1,15 @@
-package by.jwd.lemesheuski.hostel.controller.command.impl;
+package by.jwd.lemesheuski.hostel.controller.command.impl.get;
 
 import by.jwd.lemesheuski.hostel.controller.command.CommandException;
 import by.jwd.lemesheuski.hostel.controller.command.ICommand;
 import by.jwd.lemesheuski.hostel.controller.command_helper.JspPageName;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class MainGet implements ICommand {
+public class Main implements ICommand {
     @Override
-    public String execute(HttpServletRequest request) throws CommandException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         return JspPageName.MAIN_PAGE;
     }
 }

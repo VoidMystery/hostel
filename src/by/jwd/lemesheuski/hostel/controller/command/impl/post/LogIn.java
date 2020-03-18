@@ -1,4 +1,4 @@
-package by.jwd.lemesheuski.hostel.controller.command.impl;
+package by.jwd.lemesheuski.hostel.controller.command.impl.post;
 
 import by.jwd.lemesheuski.hostel.controller.command.Validator;
 import by.jwd.lemesheuski.hostel.controller.command_helper.JspPageName;
@@ -9,29 +9,33 @@ import by.jwd.lemesheuski.hostel.service.ServiceProvider;
 import by.jwd.lemesheuski.hostel.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class SignUp implements ICommand {
-
+public class LogIn implements ICommand {
     @Override
-    public String execute(HttpServletRequest request) throws CommandException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
+        String message = "Неправильный логин или пароль";
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        String password2 = request.getParameter("password2");
-        String name = request.getParameter("name");
-        String surname = request.getParameter("surname");
-        String patronymic = request.getParameter("patronymic");
 
-        if (Validator.isParametersNull(login, password, password2, name, surname, patronymic)){
+        if (Validator.isParametersNull(login, password)){
             return JspPageName.ERROR_PAGE;
         }
 
         UserService userService = ServiceProvider.getInstance().getUserService();
 
-        try {
-            request.setAttribute("message", userService.signUp(login, password, password2, name, surname, patronymic));
+        try{
+            String role = userService.auth(login, password);
+            if(role.equals("guest")) {
+                request.setAttribute("message", message);
+            }else {
+                request.getSession().setAttribute("role", role);
+                request.setAttribute("role", role);
+                return JspPageName.PROFILE_PAGE;
+            }
         }catch (ServiceException e){
             throw new CommandException(e);
         }
-        return JspPageName.SIGN_UP_PAGE;
+        return JspPageName.MAIN_PAGE;
     }
 }

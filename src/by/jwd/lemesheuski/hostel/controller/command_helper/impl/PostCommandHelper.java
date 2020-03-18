@@ -1,9 +1,10 @@
 package by.jwd.lemesheuski.hostel.controller.command_helper.impl;
 
 import by.jwd.lemesheuski.hostel.controller.command.ICommand;
-import by.jwd.lemesheuski.hostel.controller.command.impl.LogIn;
+import by.jwd.lemesheuski.hostel.controller.command.impl.post.LogIn;
 import by.jwd.lemesheuski.hostel.controller.command.impl.NoSuchCommand;
-import by.jwd.lemesheuski.hostel.controller.command.impl.SignUp;
+import by.jwd.lemesheuski.hostel.controller.command.impl.post.LogOut;
+import by.jwd.lemesheuski.hostel.controller.command.impl.post.SignUp;
 import by.jwd.lemesheuski.hostel.controller.command_helper.CommandName;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ public final class PostCommandHelper implements  CommandHelper{
     public PostCommandHelper() {
         commands.put(CommandName.SIGN_UP, new SignUp());
         commands.put(CommandName.LOGIN, new LogIn());
+        commands.put(CommandName.LOG_OUT, new LogOut());
         commands.put(CommandName.NO_SUCH_COMMAND, new NoSuchCommand());
     }
     public ICommand getCommand(String commandName) {

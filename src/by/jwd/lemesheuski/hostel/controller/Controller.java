@@ -47,28 +47,28 @@ public class Controller extends HttpServlet {
         requestHandler(postCommandHelper, request, response);
     }
 
-    private void errorMessageDirectlyFromResponse(HttpServletResponse response) throws
-            IOException{
-        response.setContentType("text/html");
-        response.getWriter().println("E R R O R");
-    }
-
     private void requestHandler(CommandHelper commandHelper, HttpServletRequest request,
                                 HttpServletResponse response) throws ServletException, IOException{
-        String commandName = request.getParameter(RequestParameterName.COMMAND_NAME);
+        String commandName;
+        if(request.getParameter("command")==null && request.getMethod().equals("GET")) {
+            commandName = "start";
+            request.setAttribute("path", request.getPathInfo());
+        }else {
+            commandName = request.getParameter(RequestParameterName.COMMAND_NAME);
+        }
         ICommand command = commandHelper.getCommand(commandName);
         String page = null;
         try {
-            page = command.execute(request);
+            page = command.execute(request, response);
         } catch (CommandException e) {
             page = JspPageName.ERROR_PAGE;
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-        if (dispatcher != null){
-            dispatcher.forward(request, response);
-        } else{
-            errorMessageDirectlyFromResponse(response);
+        if (dispatcher == null) {
+            page = JspPageName.ERROR_PAGE;
+            dispatcher = request.getRequestDispatcher(page);
         }
+        dispatcher.forward(request, response);
     }
 
     @Override
