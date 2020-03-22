@@ -50,7 +50,7 @@ public class UserDAOImpl implements UserDAO {
             preparedStatement.setString(1, role);
             ResultSet resultSet = preparedStatement.executeQuery();
             String role_id = "0";
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 role_id = resultSet.getString("role");
             }
             resultSet.close();

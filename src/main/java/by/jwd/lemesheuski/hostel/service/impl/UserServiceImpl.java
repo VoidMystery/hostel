@@ -16,9 +16,6 @@ public class UserServiceImpl implements UserService {
         }catch (DAOException e){
             throw new ServiceException(e);
         }
-        if(role == null){
-            role = "guest";
-        }
         return role;
     }
 

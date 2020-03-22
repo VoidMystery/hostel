@@ -14,7 +14,7 @@ public final class GetCommandHelper implements CommandHelper {
     private Map<CommandName, ICommand> commands = new HashMap<>();
     public GetCommandHelper() {
         commands.put(CommandName.SIGN_UP, new SignUp());
-        commands.put(CommandName.START, new Main());
+        commands.put(CommandName.MAIN, new Main());
         commands.put(CommandName.PROFILE, new Profile());
         commands.put(CommandName.NO_SUCH_COMMAND, new NoSuchCommand());
     }

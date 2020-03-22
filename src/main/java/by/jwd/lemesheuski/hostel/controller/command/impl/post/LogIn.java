@@ -21,19 +21,20 @@ public class LogIn implements ICommand {
         if (Validator.isParametersNull(login, password)){
             return JspPageName.ERROR_PAGE;
         }
-
         UserService userService = ServiceProvider.getInstance().getUserService();
 
         try{
-            String role = userService.auth(login, password);
-            if(role.equals("guest")) {
-                request.setAttribute("message", message);
-            }else {
-                request.getSession().setAttribute("role", role);
-                request.setAttribute("role", role);
-                return JspPageName.PROFILE_PAGE;
+            if(request.getSession().getAttribute("role") == null){
+                String role = userService.auth(login, password);
+                if (role==null) {
+                    request.setAttribute("message", message);
+                } else {
+                    request.getSession().setAttribute("role", role);
+                    request.setAttribute("role", role);
+                    return JspPageName.PROFILE_PAGE;
+                }
             }
-        }catch (ServiceException e){
+        }catch (Exception e){
             throw new CommandException(e);
         }
         return JspPageName.MAIN_PAGE;

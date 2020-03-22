@@ -27,19 +27,14 @@ public class Controller extends HttpServlet {
         super.init();
         try {
             ConnectionPool.getInstance().initPoolData();
-        }catch (ConnectionPoolException e){
+        } catch (ConnectionPoolException e) {
             e.printStackTrace();
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getParameter("command")!=null) {
-            GetCommandHelper getCommandHelper = CommandHelperProvider.getInstance().getGetCommandHelper();
-            requestHandler(getCommandHelper, request, response);
-        }else{
-            RequestDispatcher dispatcher = request.getRequestDispatcher(JspPageName.MAIN_PAGE);
-            dispatcher.forward(request, response);
-        }
+        GetCommandHelper getCommandHelper = CommandHelperProvider.getInstance().getGetCommandHelper();
+        requestHandler(getCommandHelper, request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,14 +43,9 @@ public class Controller extends HttpServlet {
     }
 
     private void requestHandler(CommandHelper commandHelper, HttpServletRequest request,
-                                HttpServletResponse response) throws ServletException, IOException{
-        String commandName;
-        if(request.getParameter("command")==null && request.getMethod().equals("GET")) {
-            commandName = "start";
-            request.setAttribute("path", request.getPathInfo());
-        }else {
-            commandName = request.getParameter(RequestParameterName.COMMAND_NAME);
-        }
+                                HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("role", request.getSession().getAttribute("role"));
+        String commandName = request.getParameter(RequestParameterName.COMMAND_NAME);
         ICommand command = commandHelper.getCommand(commandName);
         String page = null;
         try {

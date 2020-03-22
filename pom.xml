@@ -30,7 +30,6 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>src</sourceDirectory>
         <finalName>hostel</finalName>
         <plugins>
             <plugin>
