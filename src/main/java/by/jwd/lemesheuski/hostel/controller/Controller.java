@@ -28,7 +28,7 @@ public class Controller extends HttpServlet {
         try {
             ConnectionPool.getInstance().initPoolData();
         } catch (ConnectionPoolException e) {
-            e.printStackTrace();
+            //log
         }
     }
 
