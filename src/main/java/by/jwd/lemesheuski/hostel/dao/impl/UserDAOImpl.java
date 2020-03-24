@@ -92,6 +92,7 @@ public class UserDAOImpl implements UserDAO {
                 user.setLogin(resultSet.getString("login"));
                 user.setDiscount(resultSet.getString("discount"));
             }
+            ConnectionPool.getInstance().closeConnection(connection, preparedStatement, resultSet);
         } catch (SQLException | ConnectionPoolException e) {
             throw new DAOException(e);
         }
