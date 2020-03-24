@@ -116,6 +116,14 @@ public final class ConnectionPool {
         }
     }
 
+    public void closeConnection(Connection con) {
+        try {
+            con.close();
+        } catch (SQLException e) {
+            // logger.log(Level.ERROR, "Connection isn't return to the pool.");
+        }
+    }
+
     private void closeConnectionsQueue(BlockingQueue<Connection> queue) throws SQLException {
         Connection connection;
         while ((connection = queue.poll()) != null) {

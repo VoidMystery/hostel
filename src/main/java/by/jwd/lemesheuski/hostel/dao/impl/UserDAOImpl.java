@@ -6,10 +6,7 @@ import by.jwd.lemesheuski.hostel.dao.UserDAO;
 import by.jwd.lemesheuski.hostel.dao.connection.ConnectionPool;
 import by.jwd.lemesheuski.hostel.dao.connection.ConnectionPoolException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserDAOImpl implements UserDAO {
     @Override
@@ -19,14 +16,17 @@ public class UserDAOImpl implements UserDAO {
                 "where `user`.`login` = ? and `user`.`password` = ?";
 
         String role = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
 
-            Connection connection = ConnectionPool.getInstance().takeConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            connection = ConnectionPool.getInstance().takeConnection();
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 role = resultSet.getString("role");
             }
@@ -34,6 +34,8 @@ public class UserDAOImpl implements UserDAO {
             ConnectionPool.getInstance().closeConnection(connection, preparedStatement, resultSet);
         } catch (SQLException | ConnectionPoolException e) {
             throw new DAOException(e);
+        }finally {
+            finallyClose(connection, preparedStatement, resultSet);
         }
         return role;
     }
@@ -44,12 +46,15 @@ public class UserDAOImpl implements UserDAO {
                 "(?, ?, ?, ?, ?, ?)";
         String roleSql = "select `role`.`id` as `id` from `role` where `role`.`role_name` = ? limit 1";
         int count = 0;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
 
         try {
-            Connection connection = ConnectionPool.getInstance().takeConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(roleSql);
+            connection = ConnectionPool.getInstance().takeConnection();
+            preparedStatement = connection.prepareStatement(roleSql);
             preparedStatement.setString(1, role);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             String role_id = "0";
             if (resultSet.next()) {
                 role_id = resultSet.getString("role");
@@ -71,6 +76,8 @@ public class UserDAOImpl implements UserDAO {
             ConnectionPool.getInstance().closeConnection(connection, preparedStatement, resultSet);
         } catch (SQLException | ConnectionPoolException e) {
             throw new DAOException(e);
+        }finally {
+            finallyClose(connection, preparedStatement, resultSet);
         }
         return count;
     }
@@ -79,11 +86,15 @@ public class UserDAOImpl implements UserDAO {
         String sql = "select `surname`, `name`, `patronymic`, `login`, `discount` from `user` " +
                 "where `user`.`login` = ?";
         User user = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
         try {
-            Connection connection = ConnectionPool.getInstance().takeConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            connection = ConnectionPool.getInstance().takeConnection();
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, login);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User();
                 user.setSurname(resultSet.getString("surname"));
@@ -92,10 +103,25 @@ public class UserDAOImpl implements UserDAO {
                 user.setLogin(resultSet.getString("login"));
                 user.setDiscount(resultSet.getString("discount"));
             }
-            ConnectionPool.getInstance().closeConnection(connection, preparedStatement, resultSet);
         } catch (SQLException | ConnectionPoolException e) {
             throw new DAOException(e);
+        } finally {
+            finallyClose(connection, preparedStatement, resultSet);
         }
         return user;
+    }
+
+    private void finallyClose(Connection con, Statement st, ResultSet rs){
+        if (rs == null) {
+            if (st == null) {
+                if (con != null) {
+                    ConnectionPool.getInstance().closeConnection(con);
+                }
+            } else {
+                ConnectionPool.getInstance().closeConnection(con, st);
+            }
+        } else {
+            ConnectionPool.getInstance().closeConnection(con, st, rs);
+        }
     }
 }
