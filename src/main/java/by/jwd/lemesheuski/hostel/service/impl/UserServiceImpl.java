@@ -1,5 +1,6 @@
 package by.jwd.lemesheuski.hostel.service.impl;
 
+import by.jwd.lemesheuski.hostel.bean.User;
 import by.jwd.lemesheuski.hostel.dao.DAOException;
 import by.jwd.lemesheuski.hostel.dao.DAOProvider;
 import by.jwd.lemesheuski.hostel.dao.UserDAO;
@@ -11,9 +12,9 @@ public class UserServiceImpl implements UserService {
     public String auth(String login, String password) throws ServiceException {
         UserDAO userDAO = DAOProvider.getInstance().getUserDAO();
         String role = null;
-        try{
+        try {
             role = userDAO.findRoleByLoginAndPassword(login, password);
-        }catch (DAOException e){
+        } catch (DAOException e) {
             throw new ServiceException(e);
         }
         return role;
@@ -22,9 +23,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public String signUp(String login, String password, String password2, String surname, String name,
                          String patronymic) throws ServiceException {
-        String dataIncorrect="Некоторые данные не верны";
-        String success="Успешно зарегестрированы";
-        String loginIsPresent= "Логин уже занят";
+        String dataIncorrect = "Некоторые данные не верны";
+        String success = "Успешно зарегестрированы";
+        String loginIsPresent = "Логин уже занят";
 
         String loginPattern = "[a-zA-Z1-9_]{3,20}";
         String passwordPattern = "[a-zA-Z1-9_]{5,20}";
@@ -32,17 +33,29 @@ public class UserServiceImpl implements UserService {
 
         if (login.matches(loginPattern) && password.matches(passwordPattern) && password.equals(password2)
                 && surname.matches(SNPPattern) && name.matches(SNPPattern)
-                && patronymic.matches(SNPPattern)){
+                && patronymic.matches(SNPPattern)) {
             try {
-                if(DAOProvider.getInstance().getUserDAO().addUser(login, password, "ROLE_USER",surname, name, patronymic)==1){
+                if (DAOProvider.getInstance().getUserDAO().addUser(login, password, "ROLE_USER", surname, name, patronymic) == 1) {
                     return success;
-                }else
+                } else
                     return loginIsPresent;
-            }catch (DAOException e){
+            } catch (DAOException e) {
                 throw new ServiceException(e);
             }
-        }else {
+        } else {
             return dataIncorrect;
+        }
+    }
+
+    @Override
+    public User getUserInfo(String login) throws ServiceException {
+        if (login == null) {
+            return null;
+        }
+        try {
+            return DAOProvider.getInstance().getUserDAO().findUserByLogin(login);
+        } catch (DAOException e) {
+            throw new ServiceException(e);
         }
     }
 }

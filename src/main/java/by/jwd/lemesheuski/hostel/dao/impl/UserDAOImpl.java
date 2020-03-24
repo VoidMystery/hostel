@@ -1,5 +1,6 @@
 package by.jwd.lemesheuski.hostel.dao.impl;
 
+import by.jwd.lemesheuski.hostel.bean.User;
 import by.jwd.lemesheuski.hostel.dao.DAOException;
 import by.jwd.lemesheuski.hostel.dao.UserDAO;
 import by.jwd.lemesheuski.hostel.dao.connection.ConnectionPool;
@@ -56,7 +57,7 @@ public class UserDAOImpl implements UserDAO {
             resultSet.close();
             preparedStatement.close();
 
-            if(!role_id.equals("0")){
+            if (!role_id.equals("0")) {
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1, login);
                 preparedStatement.setString(2, password);
@@ -72,5 +73,28 @@ public class UserDAOImpl implements UserDAO {
             throw new DAOException(e);
         }
         return count;
+    }
+
+    public User findUserByLogin(String login) throws DAOException {
+        String sql = "select `surname`, `name`, `patronymic`, `login`, `discount` from `user` " +
+                "where `user`.`login` = ?";
+        User user = null;
+        try {
+            Connection connection = ConnectionPool.getInstance().takeConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                user = new User();
+                user.setSurname(resultSet.getString("surname"));
+                user.setName(resultSet.getString("name"));
+                user.setPatronymic(resultSet.getString("patronymic"));
+                user.setLogin(resultSet.getString("login"));
+                user.setDiscount(resultSet.getString("discount"));
+            }
+        } catch (SQLException | ConnectionPoolException e) {
+            throw new DAOException(e);
+        }
+        return user;
     }
 }

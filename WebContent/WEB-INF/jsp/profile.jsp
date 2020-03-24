@@ -5,8 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-<h1>You are logged in like ${requestScope.role}</h1>
-${requestScope.path}
+Информация о ${requestScope.user.login}<br>
+Имя: ${requestScope.user.name}<br>
+Фамилия: ${requestScope.user.surname}<br>
+Отчество: ${requestScope.user.patronymic}<br>
+<br>
+<br>
+Ваша текущая скидка ${requestScope.user.discount}%
 <form action="controller" method="post">
     <input type="hidden" name="command" value="log_out">
     <input type="submit" value="Выйти">

@@ -31,7 +31,8 @@ public class LogIn implements ICommand {
                 } else {
                     request.getSession().setAttribute("role", role);
                     request.setAttribute("role", role);
-                    return JspPageName.PROFILE_PAGE;
+                    request.getSession().setAttribute("login", login);
+                    request.setAttribute("login", login);
                 }
             }
         }catch (Exception e){

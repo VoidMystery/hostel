@@ -24,7 +24,7 @@
 <c:if test='${not empty requestScope.role}'>
     <form action="controller" method="get">
         <input type="hidden" name="command" value="profile"/>
-        <input type="submit" value="Профиль"/><br/>
+        <input type="submit" value="Мой профиль"/><br/>
     </form>
 </c:if>
 </body>
