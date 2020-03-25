@@ -22,16 +22,6 @@ public class Controller extends HttpServlet {
         super();
     }
 
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        try {
-            ConnectionPool.getInstance().initPoolData();
-        } catch (ConnectionPoolException e) {
-            //log
-        }
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         GetCommandHelper getCommandHelper = CommandHelperProvider.getInstance().getGetCommandHelper();
         requestHandler(getCommandHelper, request, response);
@@ -59,11 +49,5 @@ public class Controller extends HttpServlet {
             dispatcher = request.getRequestDispatcher(page);
         }
         dispatcher.forward(request, response);
-    }
-
-    @Override
-    public void destroy() {
-        ConnectionPool.getInstance().dispose();
-        super.destroy();
     }
 }
