@@ -33,6 +33,6 @@ public class SignUp implements ICommand {
         }catch (ServiceException e){
             throw new CommandException(e);
         }
-        return JspPageName.SIGN_UP_PAGE;
+        return (String) request.getSession().getAttribute("previousGET");
     }
 }

@@ -13,7 +13,7 @@
         <url-pattern>/controller</url-pattern>
     </servlet-mapping>
     <listener>
-        <listener-class>by.jwd.lemesheuski.hostel.listener.ProjectContextListener</listener-class>
+        <listener-class>by.jwd.lemesheuski.hostel.controller.listener.ProjectContextListener</listener-class>
     </listener>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>

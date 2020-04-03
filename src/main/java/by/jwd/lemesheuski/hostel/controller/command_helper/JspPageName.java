@@ -6,4 +6,5 @@ public final class JspPageName {
     public static String MAIN_PAGE = "WEB-INF/jsp/main.jsp";
     public static String ERROR_PAGE = "error.html";
     public static String PROFILE_PAGE = "WEB-INF/jsp/profile.jsp";
+    public static String LOG_IN_PAGE = "WEB-INF/jsp/log_in.jsp";
 }

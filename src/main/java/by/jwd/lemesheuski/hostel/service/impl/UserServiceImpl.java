@@ -27,13 +27,7 @@ public class UserServiceImpl implements UserService {
         String success = "Успешно зарегестрированы";
         String loginIsPresent = "Логин уже занят";
 
-        String loginPattern = "[a-zA-Z1-9_]{3,20}";
-        String passwordPattern = "[a-zA-Z1-9_]{5,20}";
-        String SNPPattern = "[A-ZА-Я][a-zа-я]{2,15}";
-
-        if (login.matches(loginPattern) && password.matches(passwordPattern) && password.equals(password2)
-                && surname.matches(SNPPattern) && name.matches(SNPPattern)
-                && patronymic.matches(SNPPattern)) {
+        if (singUpPatternMatcher(login, password, password2, surname, name, patronymic)) {
             try {
                 if (DAOProvider.getInstance().getUserDAO().addUser(login, password, "ROLE_USER", surname, name, patronymic) == 1) {
                     return success;
@@ -45,6 +39,19 @@ public class UserServiceImpl implements UserService {
         } else {
             return dataIncorrect;
         }
+    }
+
+    private boolean singUpPatternMatcher(String login, String password, String password2, String surname, String name,
+                                         String patronymic){
+        String loginPattern = "[a-zA-Z1-9_]{3,20}";
+        String passwordPattern = "[a-zA-Z1-9_]{5,20}";
+        String SNPPattern = "(([A-Z][a-z])|([А-Я][а-я])){2,15}";
+
+        if(login.matches(loginPattern) && password.matches(passwordPattern) && password.equals(password2)
+                && surname.matches(SNPPattern) && name.matches(SNPPattern)
+                && patronymic.matches(SNPPattern))
+            return true;
+        return false;
     }
 
     @Override

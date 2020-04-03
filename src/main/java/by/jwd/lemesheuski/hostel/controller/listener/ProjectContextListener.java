@@ -1,4 +1,4 @@
-package by.jwd.lemesheuski.hostel.listener;
+package by.jwd.lemesheuski.hostel.controller.listener;
 
 import by.jwd.lemesheuski.hostel.dao.connection.ConnectionPool;
 import by.jwd.lemesheuski.hostel.dao.connection.ConnectionPoolException;
@@ -12,7 +12,7 @@ public class ProjectContextListener implements ServletContextListener {
         try {
             ConnectionPool.getInstance().initPoolData();
         } catch (ConnectionPoolException e) {
-            //log
+            e.printStackTrace();
         }
     }
 

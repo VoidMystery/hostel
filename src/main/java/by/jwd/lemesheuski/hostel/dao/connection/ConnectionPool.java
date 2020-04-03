@@ -21,21 +21,21 @@ public final class ConnectionPool {
     private int poolSize;
 
     private ConnectionPool() {
-//        DBResourceManager dbResourceManager = DBResourceManager.getInstance();
-//        this.driverName = dbResourceManager.getValue(DBParameter.DB_DRIVER);
-//        this.url = dbResourceManager.getValue(DBParameter.DB_URL);
-//        this.user = dbResourceManager.getValue(DBParameter.DB_USER);
-//        this.password = dbResourceManager.getValue(DBParameter.DB_PASSWORD);
-//        try {
-//            this.poolSize = Integer.parseInt(dbResourceManager.getValue(DBParameter.DB_POLL_SIZE));
-//        } catch (NumberFormatException e) {
-//            poolSize = 5;
-//        }
-        this.driverName = DBParameter.DB_DRIVER;
-        this.url = DBParameter.DB_URL;
-        this.user = DBParameter.DB_USER;
-        this.password = DBParameter.DB_PASSWORD;
-        this.poolSize = DBParameter.DB_POLL_SIZE;
+        DBResourceManager dbResourceManager = DBResourceManager.getInstance();
+        this.driverName = dbResourceManager.getValue(DBParameter.DB_DRIVER);
+        this.url = dbResourceManager.getValue(DBParameter.DB_URL);
+        this.user = dbResourceManager.getValue(DBParameter.DB_USER);
+        this.password = dbResourceManager.getValue(DBParameter.DB_PASSWORD);
+        try {
+            this.poolSize = Integer.parseInt(dbResourceManager.getValue(DBParameter.DB_POLL_SIZE));
+        } catch (NumberFormatException e) {
+            poolSize = 5;
+        }
+//        this.driverName = "com.mysql.cj.jdbc.Driver";
+//        this.url = "jdbc:mysql://localhost:3306/jwd_hostel?useSSL=false&serverTimezone=UTC";
+//        this.user = "root";
+//        this.password = "root";
+//        this.poolSize = 5;
     }
 
     public static ConnectionPool getInstance() {

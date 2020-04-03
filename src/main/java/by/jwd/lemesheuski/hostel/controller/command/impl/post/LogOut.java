@@ -11,9 +11,7 @@ public class LogOut implements ICommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         request.getSession().removeAttribute("role");
-        request.removeAttribute("role");
         request.getSession().removeAttribute("login");
-        request.removeAttribute("login");
-        return JspPageName.MAIN_PAGE;
+        return (String) request.getSession().getAttribute("previousGET");
     }
 }
