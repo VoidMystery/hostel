@@ -1,10 +1,13 @@
 package by.jwd.lemesheuski.hostel.controller;
 
 import by.jwd.lemesheuski.hostel.controller.command.*;
+import by.jwd.lemesheuski.hostel.controller.command.impl.Params;
 import by.jwd.lemesheuski.hostel.controller.command_helper.*;
 import by.jwd.lemesheuski.hostel.controller.command_helper.CommandHelper;
 import by.jwd.lemesheuski.hostel.controller.command_helper.impl.GetCommandHelper;
 import by.jwd.lemesheuski.hostel.controller.command_helper.impl.PostCommandHelper;
+import by.jwd.lemesheuski.hostel.controller.router.Router;
+import by.jwd.lemesheuski.hostel.controller.router.RouterType;
 
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -21,44 +24,47 @@ public class Controller extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String page;
+       final String PREVIOUS_GET = "previousGET";
 
         GetCommandHelper getCommandHelper = CommandHelperProvider.getInstance().getGetCommandHelper();
-        request.getSession().setAttribute("previousGET", request.getRequestURI() + "?" + request.getQueryString());
+        request.getSession().setAttribute(PREVIOUS_GET, request.getRequestURI() + "?" + request.getQueryString());
 
-        page = requestHandler(getCommandHelper, request, response);
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-        if (dispatcher == null) {
-            page = JspPageName.ERROR_PAGE;
-            dispatcher = request.getRequestDispatcher(page);
-        }
-        dispatcher.forward(request, response);
+        requestHandler(getCommandHelper, request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String page;
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PostCommandHelper postCommandHelper = CommandHelperProvider.getInstance().getPostCommandHelper();
 
-        page = requestHandler(postCommandHelper, request, response);
-
-        response.sendRedirect(page);
+        requestHandler(postCommandHelper, request, response);
     }
 
-    private String requestHandler(CommandHelper commandHelper, HttpServletRequest request,
-                                HttpServletResponse response){
-        request.setAttribute("role", request.getSession().getAttribute("role"));
-        request.setAttribute("login", request.getSession().getAttribute("login"));
+    private void requestHandler(CommandHelper commandHelper, HttpServletRequest request,
+                                HttpServletResponse response) throws IOException, ServletException{
+        request.setAttribute(Params.ROLE, request.getSession().getAttribute(Params.ROLE));
+        request.setAttribute(Params.LOGIN, request.getSession().getAttribute(Params.LOGIN));
+
         String commandName = request.getParameter(RequestParameterName.COMMAND_NAME);
         ICommand command = commandHelper.getCommand(commandName);
-        String page;
+        Router router;
         try {
-            page = command.execute(request, response);
+            router = command.execute(request, response);
         } catch (CommandException e) {
-            page = JspPageName.ERROR_PAGE;
+            router = new Router(JspPageName.ERROR_PAGE, RouterType.REDIRECT);
         }
-        return page;
+
+        if(router.getType().equals(RouterType.FORWARD)){
+            String page = router.getRoute();
+            RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+            if (dispatcher == null) {
+                page = JspPageName.ERROR_PAGE;
+                dispatcher = request.getRequestDispatcher(page);
+            }
+            dispatcher.forward(request, response);
+        }
+
+        if(router.getType().equals(RouterType.REDIRECT)){
+            response.sendRedirect(router.getRoute());
+        }
     }
 
 

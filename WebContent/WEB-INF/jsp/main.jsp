@@ -9,14 +9,9 @@
 </head>
 <body>
 <jsp:include page="navigate.jsp"/>
-<div class="no_main2">
-    <div class="margin_main2">
-        <div class="content_body2">
-            <div class="con2">
-            </div>
-        </div>
-    </div>
+<div id="main" class="main">
 </div>
+
 <%--<h1><c:out value="${requestScope.message}"/></h1>--%>
 <%--<c:if test='${empty requestScope.role}'>--%>
 <%--    <form action="controller" method="post">--%>
@@ -37,4 +32,5 @@
 <%--    </form>--%>
 <%--</c:if>--%>
 </body>
+<jsp:include page="footer.jsp"/>
 </html>

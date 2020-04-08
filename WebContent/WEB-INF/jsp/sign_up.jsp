@@ -14,7 +14,6 @@
     <div class="margin_main2">
         <div class="content_body2">
             <div class="con2">
-                ${requestScope.message}
                 <form action="controller" method="post">
                     <input type="hidden" name="command" value="sign_up"/>
                     <input type="text" placeholder="login" name="login" value=""/>

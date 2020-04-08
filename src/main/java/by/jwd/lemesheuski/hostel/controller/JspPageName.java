@@ -1,4 +1,4 @@
-package by.jwd.lemesheuski.hostel.controller.command_helper;
+package by.jwd.lemesheuski.hostel.controller;
 
 public final class JspPageName {
     private JspPageName() {}

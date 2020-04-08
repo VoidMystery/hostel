@@ -2,25 +2,21 @@ package by.jwd.lemesheuski.hostel.controller.command.impl.get;
 
 import by.jwd.lemesheuski.hostel.controller.command.CommandException;
 import by.jwd.lemesheuski.hostel.controller.command.ICommand;
-import by.jwd.lemesheuski.hostel.controller.command_helper.JspPageName;
+import by.jwd.lemesheuski.hostel.controller.command.RedirectCommandParam;
+import by.jwd.lemesheuski.hostel.controller.command.impl.Params;
+import by.jwd.lemesheuski.hostel.controller.JspPageName;
+import by.jwd.lemesheuski.hostel.controller.router.Router;
+import by.jwd.lemesheuski.hostel.controller.router.RouterType;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class LogIn implements ICommand {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        final String WRONG_LOGIN_OR_PASSWORD = "WRONG_LOGIN_OR_PASSWORD";
-        if(request.getSession().getAttribute("role")==null) {
-            Cookie[] cookies = request.getCookies();
-            for(Cookie cookie: cookies){
-                if(cookie.getName().equals(WRONG_LOGIN_OR_PASSWORD)){
-                    request.setAttribute(WRONG_LOGIN_OR_PASSWORD, cookie.getValue());
-                }
-            }
-            return JspPageName.LOG_IN_PAGE;
+    public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
+        if(request.getSession().getAttribute(Params.ROLE)==null) {
+            return new Router(JspPageName.LOG_IN_PAGE, RouterType.FORWARD);
         }
-        return JspPageName.MAIN_PAGE;
+        return new Router(request.getRequestURI() + "?" + RedirectCommandParam.MAIN_PAGE, RouterType.REDIRECT);
     }
 }

@@ -1,48 +1,46 @@
 package by.jwd.lemesheuski.hostel.controller.command.impl.post;
 
-import by.jwd.lemesheuski.hostel.controller.command.Validator;
-import by.jwd.lemesheuski.hostel.controller.command_helper.JspPageName;
+import by.jwd.lemesheuski.hostel.controller.command.ErrorMessageName;
+import by.jwd.lemesheuski.hostel.controller.command.RedirectCommandParam;
+import by.jwd.lemesheuski.hostel.controller.JspPageName;
 import by.jwd.lemesheuski.hostel.controller.command.CommandException;
 import by.jwd.lemesheuski.hostel.controller.command.ICommand;
-import by.jwd.lemesheuski.hostel.service.ServiceException;
+import by.jwd.lemesheuski.hostel.controller.command.impl.Params;
+import by.jwd.lemesheuski.hostel.controller.router.Router;
+import by.jwd.lemesheuski.hostel.controller.router.RouterType;
 import by.jwd.lemesheuski.hostel.service.ServiceProvider;
 import by.jwd.lemesheuski.hostel.service.UserService;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class LogIn implements ICommand {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        final String WRONG_LOGIN_OR_PASSWORD = "WRONG_LOGIN_OR_PASSWORD";
+    public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
 
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-
-        if (Validator.isParametersNull(login, password)){
-            return (String) request.getSession().getAttribute("previousGET");
-        }
+        String login = request.getParameter(Params.LOGIN);
+        String password = request.getParameter(Params.PASSWORD);
         UserService userService = ServiceProvider.getInstance().getUserService();
 
         try{
-            if(request.getSession().getAttribute("role") == null){
+            if(request.getSession().getAttribute(Params.ROLE) == null){
+
                 String role = userService.auth(login, password);
 
                 if (role==null) {
-                    Cookie login_error_message = new Cookie(WRONG_LOGIN_OR_PASSWORD, Boolean.toString(true));
-                    login_error_message.setMaxAge(1);
-                    response.addCookie(login_error_message);
+                    request.setAttribute(ErrorMessageName.WRONG_LOGIN_OR_PASSWORD.name(), true);
+                    return new Router(JspPageName.LOG_IN_PAGE, RouterType.FORWARD);
                 } else {
                     request.getSession().setAttribute("role", role);
                     request.getSession().setAttribute("login", login);
                 }
+                return new Router(request.getRequestURI() + "?" + RedirectCommandParam.MAIN_PAGE, RouterType.REDIRECT);
 
-                return (String) request.getSession().getAttribute("previousGET");
+            }else{
+                return new Router((String) request.getSession().getAttribute("previousGET"), RouterType.REDIRECT);
             }
         }catch (Exception e){
             throw new CommandException(e);
         }
-        return JspPageName.ERROR_PAGE;
     }
 }

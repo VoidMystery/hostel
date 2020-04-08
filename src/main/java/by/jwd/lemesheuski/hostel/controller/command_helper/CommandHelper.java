@@ -9,7 +9,7 @@ public interface CommandHelper {
     ICommand getCommand(String commandName);
 
     default ICommand getICommand(String commandName, Map<CommandName, ICommand> commands) {
-        ICommand command = null;
+        ICommand command;
 
         if (commandName != null) {
             try {
@@ -18,9 +18,7 @@ public interface CommandHelper {
             } catch (IllegalArgumentException e) {
                 command = commands.get(CommandName.NO_SUCH_COMMAND);
             }
-        }
-
-        if(command == null) {
+        }else{
             command = commands.get(CommandName.NO_SUCH_COMMAND);
         }
 
