@@ -14,15 +14,14 @@
 <fmt:message bundle="${loc}" key="local.user.password" var="password"/>
 <fmt:message bundle="${loc}" key="local.navigate.log_in_button" var="log_in_button"/>
 <div id="main" class="main">
-
-    <c:if test="${requestScope.WRONG_LOGIN_OR_PASSWORD eq true}">
-        <c:out value="${wrong_login_or_password}"/>
-    </c:if>
     <section id="cover">
         <div id="cover-caption">
             <div class="container">
                 <div class="col-xl-5 mx-auto text-center p-4">
                     <form class="form-login login-form" action="controller" method="post">
+                        <c:if test="${requestScope.WRONG_LOGIN_OR_PASSWORD eq true}">
+                            <c:out value="${wrong_login_or_password}"/>
+                        </c:if>
                         <input type="hidden" name="command" value="log_in"/>
                         <div class="form-group">
                             <div class="form-row">
@@ -43,7 +42,8 @@
             </div>
         </div>
     </section>
-    <jsp:include page="footer.jsp"/>
+</div>
+<jsp:include page="footer.jsp"/>
 </body>
 <script type="text/javascript">
     window.onload = () => setMinHeightOn100Vh('cover')

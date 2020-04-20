@@ -28,13 +28,19 @@ public class SignUp implements ICommand {
         String patronymic = request.getParameter(Params.PATRONYMIC);
 
         UserService userService = ServiceProvider.getInstance().getUserService();
-        MessagesSack sack = new MessagesSack();
         
         try {
-            if(!userService.signUp(sack, login, password, password2, name, surname, patronymic)) {
+            MessagesSack sack = userService.signUp(login, password, password2, name, surname, patronymic);
+            if(!sack.getErrors().isEmpty()) {
                 for (ErrorMessageName message: sack.getErrors()) {
                     request.setAttribute(message.name(), true);
                 }
+                request.setAttribute(Params.LOGIN, login);
+                request.setAttribute(Params.PASSWORD, password);
+                request.setAttribute(Params.PASSWORD2, password2);
+                request.setAttribute(Params.SURNAME, surname);
+                request.setAttribute(Params.NAME, name);
+                request.setAttribute(Params.PATRONYMIC, patronymic);
                 return new Router(JspPageName.SIGN_UP_PAGE, RouterType.FORWARD);
             }
         }catch (ServiceException e){

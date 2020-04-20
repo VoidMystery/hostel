@@ -27,54 +27,47 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean signUp(MessagesSack sack, String login, String password, String password2, String surname, String name,
+    public MessagesSack signUp(String login, String password, String password2, String surname, String name,
                           String patronymic) throws ServiceException {
-        if (singUpValidate(sack, login, password, password2, surname, name, patronymic)) {
+        MessagesSack sack = singUpValidate(login, password, password2, surname, name, patronymic);
+        if (singUpValidate(login, password, password2, surname, name, patronymic).getErrors().isEmpty()) {
             try {
-                if (DAOProvider.getInstance().getUserDAO().addUser(login, password, "ROLE_USER", surname, name, patronymic) == 1) {
-                    return true;
-                } else {
+                if (DAOProvider.getInstance().getUserDAO().addUser(login, password, "ROLE_USER", surname, name, patronymic) != 1) {
                     sack.addError(ErrorMessageName.LOGIN_IS_PRESENT);
                 }
             } catch (DAOException e) {
                 throw new ServiceException(e);
             }
         }
-        return false;
+        return sack;
     }
 
-    private boolean singUpValidate(MessagesSack sack, String login, String password, String password2, String surname, String name,
+    private MessagesSack singUpValidate(String login, String password, String password2, String surname, String name,
                                    String patronymic) {
         String loginPattern = "[a-zA-Z1-9_]{3,20}";
         String passwordPattern = "[a-zA-Z1-9_]{5,20}";
         String SNPPattern = "(([A-Z][a-z])|([А-Я][а-я])){2,15}";
 
-        boolean status = true;
+        MessagesSack sack = new MessagesSack();
 
         if (login == null || !login.matches(loginPattern)){
             sack.addError(ErrorMessageName.LOGIN_IS_WRONG);
-            status = false;
         }
         if(password == null || password2 == null || !password.matches(passwordPattern)){
             sack.addError(ErrorMessageName.PASSWORD_IS_WRONG);
-            status = false;
         }else if(!password2.equals(password)){
             sack.addError(ErrorMessageName.PASSWORDS_DO_NOT_MATCH);
-            status = false;
         }
         if (surname == null || !surname.matches(SNPPattern)){
             sack.addError(ErrorMessageName.SURNAME_IS_WRONG);
-            status = false;
         }
         if(name == null || !name.matches(SNPPattern)){
             sack.addError(ErrorMessageName.NAME_IS_WRONG);
-            status = false;
         }
         if(patronymic == null || !patronymic.matches(SNPPattern)){
             sack.addError(ErrorMessageName.PATRONYMIC_IS_WRONG);
-            status = false;
         }
-        return status;
+        return sack;
     }
 
     @Override
