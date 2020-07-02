@@ -11,7 +11,8 @@ import java.sql.*;
 public class UserDAOImpl implements UserDAO {
     @Override
     public String findRoleByLoginAndPassword(String login, String password) throws DAOException {
-        final String FIND_ROLE_BY_LOGIN_AND_PASSWORD = "select `role`.`role_name` as `role` from `role` inner join `user` on `role`.`id` = `user`.`id` " +
+        final String FIND_ROLE_BY_LOGIN_AND_PASSWORD = "select `role`.`role_name` as `role` from `role` inner join `user` " +
+                "on `role`.`id` = `user`.`role_id` " +
                 "where `user`.`login` = ? and `user`.`password` = ?";
         final String ROLE_COLUMN = "role";
 
