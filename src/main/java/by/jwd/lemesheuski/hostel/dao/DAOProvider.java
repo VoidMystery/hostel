@@ -1,5 +1,7 @@
 package by.jwd.lemesheuski.hostel.dao;
 
+import by.jwd.lemesheuski.hostel.dao.impl.ApartmentDaoImpl;
+import by.jwd.lemesheuski.hostel.dao.impl.OrderDAOImpl;
 import by.jwd.lemesheuski.hostel.dao.impl.UserDAOImpl;
 
 public class DAOProvider {
@@ -11,8 +13,18 @@ public class DAOProvider {
     }
 
     private final UserDAO userDAO = new UserDAOImpl();
+    private final ApartmentDao apartmentDAO = new ApartmentDaoImpl();
+    private final OrderDAO orderDAO = new OrderDAOImpl();
 
     public UserDAO getUserDAO(){
         return userDAO;
+    }
+
+    public ApartmentDao getApartmentDAO() {
+        return apartmentDAO;
+    }
+
+    public OrderDAO getOrderDAO() {
+        return orderDAO;
     }
 }

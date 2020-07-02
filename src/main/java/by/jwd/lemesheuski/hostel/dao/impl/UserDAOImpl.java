@@ -11,9 +11,9 @@ import java.sql.*;
 public class UserDAOImpl implements UserDAO {
     @Override
     public String findRoleByLoginAndPassword(String login, String password) throws DAOException {
-
-        String sql = "select `role`.`role_name` as `role` from `role` inner join `user` on `role`.`id` = `user`.`id` " +
+        final String FIND_ROLE_BY_LOGIN_AND_PASSWORD = "select `role`.`role_name` as `role` from `role` inner join `user` on `role`.`id` = `user`.`id` " +
                 "where `user`.`login` = ? and `user`.`password` = ?";
+        final String ROLE_COLUMN = "role";
 
         String role = null;
         Connection connection = null;
@@ -23,28 +23,29 @@ public class UserDAOImpl implements UserDAO {
         try {
 
             connection = ConnectionPool.getInstance().takeConnection();
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(FIND_ROLE_BY_LOGIN_AND_PASSWORD);
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                role = resultSet.getString("role");
+            if (resultSet.next()) {
+                role = resultSet.getString(ROLE_COLUMN);
             }
 
             ConnectionPool.getInstance().closeConnection(connection, preparedStatement, resultSet);
         } catch (SQLException | ConnectionPoolException e) {
             throw new DAOException(e);
         }finally {
-            finallyClose(connection, preparedStatement, resultSet);
+            DAOUtil.finallyClose(connection, preparedStatement, resultSet);
         }
         return role;
     }
 
     @Override
     public int addUser(String login, String password, String role, String surname, String name, String patronymic) throws DAOException {
-        String sql = "insert into `user`(`login`, `password`, `surname`, `name`, `partonymic`, `role_id`) values " +
+        final String ADD_USER = "insert into `user`(`login`, `password`, `surname`, `name`, `patronymic`, `role_id`) values " +
                 "(?, ?, ?, ?, ?, ?)";
-        String roleSql = "select `role`.`id` as `id` from `role` where `role`.`role_name` = ? limit 1";
+        final String FIND_ROLE_BY_ROLE_NAME = "select `role`.`id` as `id` from `role` where `role`.`role_name` = ? limit 1";
+        final String ROLE_ID_COLUMN_LABEL="id";
         int count = 0;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -52,24 +53,24 @@ public class UserDAOImpl implements UserDAO {
 
         try {
             connection = ConnectionPool.getInstance().takeConnection();
-            preparedStatement = connection.prepareStatement(roleSql);
+            preparedStatement = connection.prepareStatement(FIND_ROLE_BY_ROLE_NAME);
             preparedStatement.setString(1, role);
             resultSet = preparedStatement.executeQuery();
-            String role_id = "0";
+            String roleId = "0";
             if (resultSet.next()) {
-                role_id = resultSet.getString("role");
+                roleId = resultSet.getString(ROLE_ID_COLUMN_LABEL);
             }
             resultSet.close();
             preparedStatement.close();
 
-            if (!role_id.equals("0")) {
-                preparedStatement = connection.prepareStatement(sql);
+            if (!roleId.equals("0")) {
+                preparedStatement = connection.prepareStatement(ADD_USER);
                 preparedStatement.setString(1, login);
                 preparedStatement.setString(2, password);
                 preparedStatement.setString(3, surname);
                 preparedStatement.setString(4, name);
                 preparedStatement.setString(5, patronymic);
-                preparedStatement.setString(6, role_id);
+                preparedStatement.setString(6, roleId);
                 count = preparedStatement.executeUpdate();
             }
 
@@ -77,14 +78,20 @@ public class UserDAOImpl implements UserDAO {
         } catch (SQLException | ConnectionPoolException e) {
             throw new DAOException(e);
         }finally {
-            finallyClose(connection, preparedStatement, resultSet);
+            DAOUtil.finallyClose(connection, preparedStatement, resultSet);
         }
         return count;
     }
 
     public User findUserByLogin(String login) throws DAOException {
-        String sql = "select `surname`, `name`, `patronymic`, `login`, `discount` from `user` " +
+        final String FIND_USER_BY_LOGIN = "select `id`, `surname`, `name`, `patronymic`, `login`, `discount` from `user` " +
                 "where `user`.`login` = ?";
+        final String USER_SURNAME_COLUMN_LABEL = "surname";
+        final String USER_NAME_COLUMN_LABEL = "name";
+        final String USER_PATRONYMIC_COLUMN_LABEL = "patronymic";
+        final String USER_LOGIN_COLUMN_LABEL = "login";
+        final String USER_DISCOUNT_COLUMN_LABEL = "discount";
+
         User user = null;
         Connection connection = null;
         PreparedStatement preparedStatement = null;
@@ -92,36 +99,24 @@ public class UserDAOImpl implements UserDAO {
 
         try {
             connection = ConnectionPool.getInstance().takeConnection();
-            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(FIND_USER_BY_LOGIN);
             preparedStatement.setString(1, login);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User();
-                user.setSurname(resultSet.getString("surname"));
-                user.setName(resultSet.getString("name"));
-                user.setPatronymic(resultSet.getString("patronymic"));
-                user.setLogin(resultSet.getString("login"));
-                user.setDiscount(resultSet.getString("discount"));
+                user.setId(resultSet.getInt(1));
+                user.setSurname(resultSet.getString(USER_SURNAME_COLUMN_LABEL));
+                user.setName(resultSet.getString(USER_NAME_COLUMN_LABEL));
+                user.setPatronymic(resultSet.getString(USER_PATRONYMIC_COLUMN_LABEL));
+                user.setLogin(resultSet.getString(USER_LOGIN_COLUMN_LABEL));
+                user.setDiscount(resultSet.getString(USER_DISCOUNT_COLUMN_LABEL));
             }
         } catch (SQLException | ConnectionPoolException e) {
             throw new DAOException(e);
         } finally {
-            finallyClose(connection, preparedStatement, resultSet);
+            DAOUtil.finallyClose(connection, preparedStatement, resultSet);
         }
         return user;
     }
 
-    private void finallyClose(Connection con, Statement st, ResultSet rs){
-        if (rs == null) {
-            if (st == null) {
-                if (con != null) {
-                    ConnectionPool.getInstance().closeConnection(con);
-                }
-            } else {
-                ConnectionPool.getInstance().closeConnection(con, st);
-            }
-        } else {
-            ConnectionPool.getInstance().closeConnection(con, st, rs);
-        }
-    }
 }

@@ -1,12 +1,21 @@
 package by.jwd.lemesheuski.hostel.controller.command.impl;
 
 public class Params {
-    public final static String  ROLE = "role";
-    public final static String  LOGIN = "login";
-    public final static String  USER = "user";
-    public final static String  PASSWORD = "password";
-    public final static String  PASSWORD2 = "password2";
-    public final static String  NAME = "name";
-    public final static String  SURNAME = "surname";
-    public final static String  PATRONYMIC = "patronymic";
+    public static final String  ROLE = "role";
+    public static final String  LOGIN = "login";
+    public static final String  USER = "user";
+    public static final String  PASSWORD = "password";
+    public static final String  PASSWORD2 = "password2";
+    public static final String  NAME = "name";
+    public static final String  SURNAME = "surname";
+    public static final String  PATRONYMIC = "patronymic";
+    public static final String  APARTMENT_TYPES = "apartment_types";
+    public static final String  NUMBER_OF_ROOMS = "number_of_rooms";
+    public static final String  NUMBER_OF_BEDS = "number_of_beds";
+    public static final String  APARTMENTS = "apartments";
+    public static final String  ORDERS = "orders";
+    public static final String  BEGINNING_DATE = "beginning_date";
+    public static final String  END_DATE = "end_date";
+    private Params() {
+    }
 }

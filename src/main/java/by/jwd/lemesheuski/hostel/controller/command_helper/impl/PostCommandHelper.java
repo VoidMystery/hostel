@@ -6,6 +6,8 @@ import by.jwd.lemesheuski.hostel.controller.command.impl.post.LogIn;
 import by.jwd.lemesheuski.hostel.controller.command.impl.NoSuchCommand;
 import by.jwd.lemesheuski.hostel.controller.command.impl.post.LogOut;
 import by.jwd.lemesheuski.hostel.controller.command.impl.post.SignUp;
+import by.jwd.lemesheuski.hostel.controller.command.impl.post.apartment.AddApartment;
+import by.jwd.lemesheuski.hostel.controller.command.impl.post.order.Reservation;
 import by.jwd.lemesheuski.hostel.controller.command_helper.CommandHelper;
 import by.jwd.lemesheuski.hostel.controller.command_helper.CommandName;
 
@@ -20,6 +22,8 @@ public final class PostCommandHelper implements CommandHelper {
         commands.put(CommandName.LOG_OUT, new LogOut());
         commands.put(CommandName.NO_SUCH_COMMAND, new NoSuchCommand());
         commands.put(CommandName.LOCAL_CHANGE, new LocalChange());
+        commands.put(CommandName.ADD_APARTMENT, new AddApartment());
+        commands.put(CommandName.RESERVATION, new Reservation());
     }
     public ICommand getCommand(String commandName) {
         return getICommand(commandName, commands);

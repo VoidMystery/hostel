@@ -8,6 +8,7 @@ import by.jwd.lemesheuski.hostel.controller.command_helper.impl.GetCommandHelper
 import by.jwd.lemesheuski.hostel.controller.command_helper.impl.PostCommandHelper;
 import by.jwd.lemesheuski.hostel.controller.router.Router;
 import by.jwd.lemesheuski.hostel.controller.router.RouterType;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -18,9 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public class Controller extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private static final Logger log = Logger.getLogger(Controller.class);
 
     public Controller() {
         super();
+        log.info("Logging is running");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -49,6 +52,7 @@ public class Controller extends HttpServlet {
         try {
             router = command.execute(request, response);
         } catch (CommandException e) {
+            log.error(e);
             router = new Router(JspPageName.ERROR_PAGE, RouterType.REDIRECT);
         }
 

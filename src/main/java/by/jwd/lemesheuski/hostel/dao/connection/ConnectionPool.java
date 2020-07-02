@@ -1,5 +1,8 @@
 package by.jwd.lemesheuski.hostel.dao.connection;
 
+import by.jwd.lemesheuski.hostel.dao.impl.ApartmentDaoImpl;
+import org.apache.log4j.Logger;
+
 import java.sql.*;
 import java.util.Locale;
 import java.util.Map;
@@ -9,6 +12,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 
 public final class ConnectionPool {
+
+    private static final Logger log = Logger.getLogger(ConnectionPool.class);
+
     private static final ConnectionPool instance = new ConnectionPool();
 
     private BlockingQueue<Connection> connectionQueue;
@@ -69,7 +75,7 @@ public final class ConnectionPool {
             closeConnectionsQueue(givenAwayConQueue);
             closeConnectionsQueue(connectionQueue);
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Error closing the connection.", e);
+            log.error(e);
         }
     }
 
@@ -89,17 +95,17 @@ public final class ConnectionPool {
         try {
             rs.close();
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "ResultSet isn't closed.");
+            log.error(e);
         }
         try {
             st.close();
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Statement isn't closed.");
+            log.error(e);
         }
         try {
             con.close();
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Connection isn't return to the pool.");
+            log.error(e);
         }
     }
 
@@ -107,12 +113,24 @@ public final class ConnectionPool {
         try {
             st.close();
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Statement isn't closed.");
+            log.error(e);
         }
         try {
             con.close();
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Connection isn't return to the pool.");
+            log.error(e);
+        }
+    }
+    public void closeConnection(Statement st, ResultSet rs) {
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            log.error(e);
+        }
+        try {
+            st.close();
+        } catch (SQLException e) {
+            log.error(e);
         }
     }
 
@@ -120,7 +138,7 @@ public final class ConnectionPool {
         try {
             con.close();
         } catch (SQLException e) {
-            // logger.log(Level.ERROR, "Connection isn't return to the pool.");
+            log.error(e);
         }
     }
 

@@ -20,6 +20,9 @@
 <fmt:message bundle="${loc}" key="local.navigate.my_account" var="my_account"/>
 <fmt:message bundle="${loc}" key="local.navigate.my_account.menu.profile" var="profile"/>
 <fmt:message bundle="${loc}" key="local.navigate.my_account.menu.log_out_button" var="log_out_button"/>
+<fmt:message bundle="${loc}" key="local.navigate.authorised.rooms" var="rooms"/>
+<fmt:message bundle="${loc}" key="local.navigate.admin.set_room_parameters_button" var="set_room_parameters_button"/>
+<fmt:message bundle="${loc}" key="local.navigate.user.shopping_cart" var="shopping_cart"/>
 <div style="background-color: #257496;">
     <nav class="navbar navbar-dark navbar-expand-md justify-content-xl-end navigation-clean"
          style="height: 35px">
@@ -43,11 +46,49 @@
     <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="height: 50px;">
         <div class="container">
             <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="nav navbar-nav mr-auto">
-                    <li role="presentation" class="nav-item"></li>
-                    <li role="presentation" class="nav-item"></li>
+                <ul class="navbar-nav mr-auto">
+                    <c:if test="${requestScope.role eq 'ROLE_USER'}">
+                        <li role="nav-item " class="nav-item">
+                        <form class="form-inline" method="get" action="controller">
+                            <input type="hidden" class="form-control" name="command" value="select_apartments"/>
+                            <button class="btn btn-link" type="submit"
+                                    style="text-decoration: none; color: white; font-weight: bold">
+                                    ${rooms}
+                            </button>
+                        </form>
+                        </li>
+                        <li role="nav-item " class="nav-item">
+                        <form class="form-inline" method="get" action="controller">
+                            <input type="hidden" class="form-control" name="command" value="shopping_cart"/>
+                            <button class="btn btn-link" type="submit"
+                                    style="text-decoration: none; color: white; font-weight: bold">
+                                    ${shopping_cart}
+                            </button>
+                        </form>
+                        </li>
+                    </c:if>
+                    <c:if test="${requestScope.role eq 'ROLE_ADMIN'}">
+                        <li role="nav-item " class="nav-item">
+                            <form class="form-inline" method="get" action="controller">
+                                <input type="hidden" class="form-control" name="command" value="apartments"/>
+                                <button class="btn btn-link" type="submit"
+                                        style="text-decoration: none; color: white; font-weight: bold">
+                                        ${rooms}
+                                </button>
+                            </form>
+                        </li>
+                        <li role="nav-item" class="nav-item">
+                            <form class="form-inline" action="controller" method="get">
+                                <input type="hidden" class="form-control" name="command" value="set_room_params"/>
+                                <button class="btn btn-link" type="submit"
+                                        style="text-decoration: none; color: white; font-weight: bold">
+                                        ${set_room_parameters_button}
+                                </button>
+                            </form>
+                        </li>
+                    </c:if>
                 </ul>
-                <div class="container d-flex justify-content-xl-end">
+                <div class="d-flex justify-content-xl-end">
                     <c:if test="${empty requestScope.role}">
                         <form class="form-inline" method="get" action="controller">
                             <input type="hidden" class="form-control" name="command" value="log_in"/>
@@ -67,7 +108,7 @@
 
                     <c:if test="${not empty requestScope.role}">
                         <div class="dropdown">
-                            <button type="button" class="btn btn-link dropdown-toggle" id="dropdownMenuLink"
+                            <button type="button" class="btn btn-link dropdown-toggle" id="dropdownAccountMenu"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                     style="text-decoration: none; color: white; font-weight: bold">
                                     ${my_account}
