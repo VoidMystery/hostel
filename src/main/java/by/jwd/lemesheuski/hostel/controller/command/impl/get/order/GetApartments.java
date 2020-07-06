@@ -10,7 +10,7 @@ import by.jwd.lemesheuski.hostel.controller.router.RouterType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SelectApartments implements ICommand {
+public class GetApartments implements ICommand {
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

@@ -16,6 +16,21 @@ public interface ApartmentService {
 
     List<Apartment> getApartmentList() throws ServiceException;
 
+    Apartment findApartmentById(int id) throws ServiceException;
+
     boolean saveApartment(String apartmentNumber, String floor, String numberOfBedsId, String apartmentTypeId,
                           String numberOfRoomsId, String balcony, String price) throws ServiceException;
+
+    boolean editApartment(String id, String apartmentNumber, String floor, String numberOfBedsId, String apartmentTypeId,
+                          String numberOfRoomsId, String balcony, String price) throws ServiceException;
+
+    boolean updateApartmentType(int id, String type) throws ServiceException;
+
+    boolean updateNumberOfRooms(int id, int rooms) throws ServiceException;
+
+    boolean updateNumberOfBeds(int id, int beds) throws ServiceException;
+
+    ApartmentType findApartmentTypeById(int id) throws ServiceException;
+    NumberOfBeds findNumberOfBedsById(int id) throws ServiceException;
+    NumberOfRooms findNumberOfRoomsById(int id) throws ServiceException;
 }

@@ -1,10 +1,8 @@
 package by.jwd.lemesheuski.hostel.dao.connection;
 
-import by.jwd.lemesheuski.hostel.dao.impl.ApartmentDaoImpl;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -37,11 +35,6 @@ public final class ConnectionPool {
         } catch (NumberFormatException e) {
             poolSize = 5;
         }
-//        this.driverName = "com.mysql.cj.jdbc.Driver";
-//        this.url = "jdbc:mysql://localhost:3306/jwd_hostel?useSSL=false&serverTimezone=UTC";
-//        this.user = "root";
-//        this.password = "root";
-//        this.poolSize = 5;
     }
 
     public static ConnectionPool getInstance() {
@@ -49,7 +42,6 @@ public final class ConnectionPool {
     }
 
     public void initPoolData() throws ConnectionPoolException {
-//        Locale.setDefault(Locale.ENGLISH);
         try {
             Class.forName(driverName);
             givenAwayConQueue = new ArrayBlockingQueue<>(poolSize);

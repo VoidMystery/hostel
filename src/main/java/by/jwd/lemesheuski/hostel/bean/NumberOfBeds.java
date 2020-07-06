@@ -31,4 +31,12 @@ public class NumberOfBeds implements Serializable {
     public void setBeds(int beds) {
         this.beds = beds;
     }
+
+    @Override
+    public String toString() {
+        return "NumberOfBeds{" +
+                "id=" + id +
+                ", beds=" + beds +
+                '}';
+    }
 }

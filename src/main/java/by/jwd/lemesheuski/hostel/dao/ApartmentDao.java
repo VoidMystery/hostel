@@ -13,6 +13,15 @@ public interface ApartmentDao {
     List<NumberOfBeds> findAllNumberOfBeds() throws DAOException;
     List<NumberOfRooms> findAllNumberOfRooms() throws DAOException;
     List<Apartment> findAllApartments() throws DAOException;
+    Apartment findApartmentById(int id) throws DAOException;
     boolean saveApartment(Apartment apartment, ApartmentType apartmentType, NumberOfBeds numberOfBeds,
                           NumberOfRooms numberOfRooms) throws DAOException;
+    boolean updateApartment(Apartment apartment, ApartmentType apartmentType, NumberOfBeds numberOfBeds,
+                          NumberOfRooms numberOfRooms) throws DAOException;
+    boolean updateApartmentType(ApartmentType apartmentType) throws DAOException;
+    boolean updateNumberOfRooms(NumberOfRooms numberOfRooms) throws DAOException;
+    boolean updateNumberOfBeds(NumberOfBeds numberOfBeds) throws DAOException;
+    ApartmentType findApartmentTypeById(int id) throws DAOException;
+    NumberOfBeds findNumberOfBedsById(int id) throws DAOException;
+    NumberOfRooms findNumberOfRoomsById(int id) throws DAOException;
 }

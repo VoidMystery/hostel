@@ -18,6 +18,7 @@
 <fmt:message bundle="${loc}" key="local.order.end_date" var="end_date"/>
 <fmt:message bundle="${loc}" key="local.order.status" var="status"/>
 <fmt:message bundle="${loc}" key="local.order.price" var="price"/>
+<fmt:message bundle="${loc}" key="local.action.confirm_payment" var="confirm_payment"/>
 
 <div id="main" class="main">
     <br>
@@ -29,6 +30,9 @@
             <td>${end_date}</td>
             <td>${status}</td>
             <td>${price}</td>
+            <c:if test="${requestScope.role eq 'ROLE_ADMIN'}">
+                <td></td>
+            </c:if>
         </tr>
         </thead>
         <tbody>
@@ -39,6 +43,15 @@
                 <td>${o.endDate}</td>
                 <td>${o.status}</td>
                 <td>${o.price}</td>
+                <c:if test="${requestScope.role eq 'ROLE_ADMIN' and o.status ne 'paid'}">
+                    <td>
+                        <form action="controller" method="post">
+                            <input type="hidden" name="command" value="confirm_payment">
+                            <input type="hidden" name="id" value="${o.id}">
+                            <button type="submit">${confirm_payment}</button>
+                        </form>
+                    </td>
+                </c:if>
             </tr>
         </c:forEach>
         </tbody>

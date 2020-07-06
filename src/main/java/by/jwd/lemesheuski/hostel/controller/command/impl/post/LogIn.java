@@ -6,7 +6,7 @@ import by.jwd.lemesheuski.hostel.controller.JspPageName;
 import by.jwd.lemesheuski.hostel.controller.command.CommandException;
 import by.jwd.lemesheuski.hostel.controller.command.ICommand;
 import by.jwd.lemesheuski.hostel.controller.command.impl.Params;
-import by.jwd.lemesheuski.hostel.controller.command.impl.get.order.SelectApartmentsWithDate;
+import by.jwd.lemesheuski.hostel.controller.command.impl.get.order.GetApartmentsWithDate;
 import by.jwd.lemesheuski.hostel.controller.router.Router;
 import by.jwd.lemesheuski.hostel.controller.router.RouterType;
 import by.jwd.lemesheuski.hostel.service.ServiceProvider;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LogIn implements ICommand {
 
-    private static final Logger log = Logger.getLogger(SelectApartmentsWithDate.class);
+    private static final Logger log = Logger.getLogger(GetApartmentsWithDate.class);
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

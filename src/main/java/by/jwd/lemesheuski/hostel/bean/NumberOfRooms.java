@@ -31,4 +31,12 @@ public class NumberOfRooms implements Serializable {
     public void setRooms(int rooms) {
         this.rooms = rooms;
     }
+
+    @Override
+    public String toString() {
+        return "NumberOfRooms{" +
+                "id=" + id +
+                ", rooms=" + rooms +
+                '}';
+    }
 }

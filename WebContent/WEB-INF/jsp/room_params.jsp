@@ -104,7 +104,7 @@
                                 <td>
                                     <div class="form-row">
                                         <form action="controller" method="get">
-                                            <input type="hidden" name="command" value="edit_nob">
+                                            <input type="hidden" name="command" value="edit_number_of_beds">
                                             <input type="hidden" name="id" value="${nob.id}">
                                             <button class="btn btn-primary" type="submit">${edit}</button>
                                         </form>
@@ -134,7 +134,7 @@
             <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                 <div class="card-body">
                     <form action="controller" method="get">
-                        <input type="hidden" name="command" value="add_number_of_rooms">
+                        <input type="hidden" name="command" value="add_number_of_room">
                         <input type="hidden" name="id" value="type.id">
                         <button class="btn btn-success" type="submit">${add}</button>
                     </form>
@@ -153,7 +153,7 @@
                                 <td>
                                     <div class="form-row">
                                         <form action="controller" method="get">
-                                            <input type="hidden" name="command" value="edit_nor">
+                                            <input type="hidden" name="command" value="edit_number_of_room">
                                             <input type="hidden" name="id" value="${nor.id}">
                                             <button class="btn btn-primary" type="submit">${edit}</button>
                                         </form>

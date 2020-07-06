@@ -53,4 +53,33 @@ public class OrderServiceImpl implements OrderService {
         }
         return status;
     }
+
+    @Override
+    public List<Order> findAllOrders() throws ServiceException {
+        List<Order> orderList;
+        try{
+            orderList = orderDAO.findAllOrders();
+        }catch (DAOException e){
+            throw new ServiceException(e);
+        }
+        return orderList;
+    }
+
+    @Override
+    public boolean updateOrderStatusById(int id) throws ServiceException {
+        Order order;
+        final String status = "paid";
+        boolean operationStatus = false;
+        try{
+            order = orderDAO.findOrderById(id);
+            if(order.getId() != 0){
+                order.setStatus(status);
+                operationStatus = orderDAO.updateOrderById(order);
+                log.info(operationStatus);
+            }
+        }catch (DAOException e){
+            throw new ServiceException(e);
+        }
+        return operationStatus;
+    }
 }

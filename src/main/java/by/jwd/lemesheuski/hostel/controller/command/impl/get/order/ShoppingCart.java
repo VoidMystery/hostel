@@ -8,7 +8,6 @@ import by.jwd.lemesheuski.hostel.controller.command.RedirectCommandParam;
 import by.jwd.lemesheuski.hostel.controller.command.impl.Params;
 import by.jwd.lemesheuski.hostel.controller.router.Router;
 import by.jwd.lemesheuski.hostel.controller.router.RouterType;
-import by.jwd.lemesheuski.hostel.dao.DAOException;
 import by.jwd.lemesheuski.hostel.service.ApartmentService;
 import by.jwd.lemesheuski.hostel.service.OrderService;
 import by.jwd.lemesheuski.hostel.service.ServiceException;
@@ -16,7 +15,6 @@ import by.jwd.lemesheuski.hostel.service.ServiceProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCart implements ICommand {
@@ -35,7 +33,7 @@ public class ShoppingCart implements ICommand {
             }catch (ServiceException e){
                 throw new CommandException(e);
             }
-            return new Router(JspPageName.SHOPPING_CART, RouterType.FORWARD);
+            return new Router(JspPageName.ORDERS, RouterType.FORWARD);
         }
         return new Router(request.getRequestURI() + "?" + RedirectCommandParam.MAIN_PAGE, RouterType.REDIRECT);
     }

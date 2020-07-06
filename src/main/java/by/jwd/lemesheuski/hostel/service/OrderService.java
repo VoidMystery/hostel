@@ -10,4 +10,6 @@ public interface OrderService {
     List<Apartment> findApartmentByDate(LocalDate beginningDate, LocalDate endDate) throws ServiceException;
     List<Order> findOrdersByLogin(String login) throws ServiceException;
     boolean makeReservation(int id, String login, LocalDate beginningDate, LocalDate endDate) throws ServiceException;
+    List<Order> findAllOrders() throws ServiceException;
+    boolean updateOrderStatusById(int id) throws ServiceException;
 }

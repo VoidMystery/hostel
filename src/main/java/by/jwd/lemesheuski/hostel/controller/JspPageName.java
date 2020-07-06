@@ -11,5 +11,7 @@ public final class JspPageName {
     public static final String APARTMENT_PAGE = "WEB-INF/jsp/apartments.jsp";
     public static final String ADD_APARTMENT_PAGE = "WEB-INF/jsp/add_apartment.jsp";
     public static final String SELECT_APARTMENTS = "WEB-INF/jsp/select_apartments.jsp";
-    public static final String SHOPPING_CART = "WEB-INF/jsp/shopping_cart.jsp";
+    public static final String ORDERS = "WEB-INF/jsp/orders.jsp";
+    public static final String EDIT_PARAM = "WEB-INF/jsp/edit_param.jsp";
+    public static final String EDIT_APARTMENT = "WEB-INF/jsp/edit_apartment.jsp";
 }

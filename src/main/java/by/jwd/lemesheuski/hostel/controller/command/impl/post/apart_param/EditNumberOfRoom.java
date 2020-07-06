@@ -1,6 +1,5 @@
-package by.jwd.lemesheuski.hostel.controller.command.impl.post.apartment;
+package by.jwd.lemesheuski.hostel.controller.command.impl.post.apart_param;
 
-import by.jwd.lemesheuski.hostel.controller.JspPageName;
 import by.jwd.lemesheuski.hostel.controller.command.CommandException;
 import by.jwd.lemesheuski.hostel.controller.command.ICommand;
 import by.jwd.lemesheuski.hostel.controller.command.RedirectCommandParam;
@@ -14,27 +13,23 @@ import by.jwd.lemesheuski.hostel.service.ServiceProvider;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AddApartment implements ICommand {
+public class EditNumberOfRoom implements ICommand {
     private final ApartmentService apartmentService = ServiceProvider.getInstance().getApartmentService();
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String role = (String) request.getSession().getAttribute(Params.ROLE);
-        if (role.equals("ROLE_ADMIN")) {
-            String apartmentNumber = request.getParameter("apartment_number");
-            String floor = request.getParameter("floor");
-            String numberOfBedsId = request.getParameter("number_of_beds");
-            String apartmentTypeId = request.getParameter("apartment_type");
-            String numberOfRoomsId = request.getParameter("number_of_rooms");
-            String balcony = request.getParameter("balcony");
-            String price = request.getParameter("price");
+        String id =  request.getParameter("id");
+        String rooms =  request.getParameter("rooms");
+        if (role!=null && role.equals("ROLE_ADMIN")) {
+            request.setAttribute(Params.ROLE, role);
             try {
-                apartmentService.saveApartment(apartmentNumber,floor,numberOfBedsId,apartmentTypeId,numberOfRoomsId,
-                        balcony,price);
+                apartmentService.updateNumberOfRooms(Integer.parseInt(id), Integer.parseInt(rooms));
             } catch (ServiceException e) {
+
                 throw new CommandException(e);
             }
-            return new Router(request.getRequestURI() + "?" + RedirectCommandParam.APARTMENTS, RouterType.REDIRECT);
+            return new Router(request.getRequestURI() + "?" + RedirectCommandParam.ROOM_PARAMS, RouterType.REDIRECT);
         }
         return new Router(request.getRequestURI() + "?" + RedirectCommandParam.MAIN_PAGE, RouterType.REDIRECT);
     }

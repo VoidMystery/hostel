@@ -23,6 +23,7 @@
 <fmt:message bundle="${loc}" key="local.navigate.authorised.rooms" var="rooms"/>
 <fmt:message bundle="${loc}" key="local.navigate.admin.set_room_parameters_button" var="set_room_parameters_button"/>
 <fmt:message bundle="${loc}" key="local.navigate.user.shopping_cart" var="shopping_cart"/>
+<fmt:message bundle="${loc}" key="local.navigate.admin.orders_button" var="orders_button"/>
 <div style="background-color: #257496;">
     <nav class="navbar navbar-dark navbar-expand-md justify-content-xl-end navigation-clean"
          style="height: 35px">
@@ -83,6 +84,15 @@
                                 <button class="btn btn-link" type="submit"
                                         style="text-decoration: none; color: white; font-weight: bold">
                                         ${set_room_parameters_button}
+                                </button>
+                            </form>
+                        </li>
+                        <li role="nav-item" class="nav-item">
+                            <form class="form-inline" action="controller" method="get">
+                                <input type="hidden" class="form-control" name="command" value="orders"/>
+                                <button class="btn btn-link" type="submit"
+                                        style="text-decoration: none; color: white; font-weight: bold">
+                                        ${orders_button}
                                 </button>
                             </form>
                         </li>
