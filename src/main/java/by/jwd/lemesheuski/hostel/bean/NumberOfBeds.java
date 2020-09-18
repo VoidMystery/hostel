@@ -33,6 +33,24 @@ public class NumberOfBeds implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        NumberOfBeds that = (NumberOfBeds) o;
+
+        if (id != that.id) return false;
+        return beds == that.beds;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + beds;
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "NumberOfBeds{" +
                 "id=" + id +

@@ -20,6 +20,7 @@ public final class ConnectionPool {
 
     private String driverName;
     private String url;
+    private String testUrl;
     private String user;
     private String password;
     private int poolSize;
@@ -28,6 +29,7 @@ public final class ConnectionPool {
         DBResourceManager dbResourceManager = DBResourceManager.getInstance();
         this.driverName = dbResourceManager.getValue(DBParameter.DB_DRIVER);
         this.url = dbResourceManager.getValue(DBParameter.DB_URL);
+        this.testUrl = dbResourceManager.getValue(DBParameter.DB_TEST_URL);
         this.user = dbResourceManager.getValue(DBParameter.DB_USER);
         this.password = dbResourceManager.getValue(DBParameter.DB_PASSWORD);
         try {
@@ -48,6 +50,23 @@ public final class ConnectionPool {
             connectionQueue = new ArrayBlockingQueue<>(poolSize);
             for (int i = 0; i < poolSize; i++) {
                 Connection connection = DriverManager.getConnection(url, user, password);
+                PooledConnection pooledConnection = new PooledConnection(connection);
+                connectionQueue.add(pooledConnection);
+            }
+        } catch (SQLException e) {
+            throw new ConnectionPoolException("SQLException in ConnectionPool", e);
+        } catch (ClassNotFoundException e) {
+            throw new ConnectionPoolException("Can't find database driver class", e);
+        }
+    }
+
+    public void initPoolDataForTest() throws ConnectionPoolException {
+        try {
+            Class.forName(driverName);
+            givenAwayConQueue = new ArrayBlockingQueue<>(poolSize);
+            connectionQueue = new ArrayBlockingQueue<>(poolSize);
+            for (int i = 0; i < poolSize; i++) {
+                Connection connection = DriverManager.getConnection(testUrl, user, password);
                 PooledConnection pooledConnection = new PooledConnection(connection);
                 connectionQueue.add(pooledConnection);
             }

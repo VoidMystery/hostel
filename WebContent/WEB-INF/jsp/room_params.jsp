@@ -45,27 +45,12 @@
                         <thead>
                         <tr>
                             <td>${aprtment_type}</td>
-                            <td>${action}</td>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach var="type" items="${requestScope.apartment_types}">
                             <tr>
                                 <td>${type.type}</td>
-                                <td>
-                                    <div class="form-row">
-                                        <form action="controller" method="get">
-                                            <input type="hidden" name="command" value="edit_type">
-                                            <input type="hidden" name="id" value="${type.id}">
-                                            <button class="btn btn-primary" type="submit">${edit}</button>
-                                        </form>
-                                        <form action="controller" method="post">
-                                            <input type="hidden" name="command" value="delete_type">
-                                            <input type="hidden" name="id" value="${type.id}">
-                                            <button class="btn btn-danger" type="submit">${delete}</button>
-                                        </form>
-                                    </div>
-                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -85,7 +70,7 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                 <div class="card-body">
                     <form action="controller" method="get">
-                        <input type="hidden" name="command" value="add_number_of_beds">
+                        <input type="hidden" name="command" value="add_nob">
                         <input type="hidden" name="id" value="type.id">
                         <button class="btn btn-success" type="submit">${add}</button>
                     </form>
@@ -94,27 +79,12 @@
                         <thead>
                         <tr>
                             <td>${number_of_beds}</td>
-                            <td>${action}</td>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach var="nob" items="${requestScope.number_of_beds}">
                             <tr>
                                 <td>${nob.beds}</td>
-                                <td>
-                                    <div class="form-row">
-                                        <form action="controller" method="get">
-                                            <input type="hidden" name="command" value="edit_number_of_beds">
-                                            <input type="hidden" name="id" value="${nob.id}">
-                                            <button class="btn btn-primary" type="submit">${edit}</button>
-                                        </form>
-                                        <form action="controller" method="post">
-                                            <input type="hidden" name="command" value="delete_nob">
-                                            <input type="hidden" name="id" value="${nob.id}">
-                                            <button class="btn btn-danger" type="submit">${delete}</button>
-                                        </form>
-                                    </div>
-                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -134,7 +104,7 @@
             <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                 <div class="card-body">
                     <form action="controller" method="get">
-                        <input type="hidden" name="command" value="add_number_of_room">
+                        <input type="hidden" name="command" value="add_nor">
                         <input type="hidden" name="id" value="type.id">
                         <button class="btn btn-success" type="submit">${add}</button>
                     </form>
@@ -143,27 +113,12 @@
                         <thead>
                         <tr>
                             <td>${number_of_rooms}</td>
-                            <td>${action}</td>
                         </tr>
                         </thead>
                         <tbody>
                         <c:forEach var="nor" items="${requestScope.number_of_rooms}">
                             <tr>
                                 <td>${nor.rooms}</td>
-                                <td>
-                                    <div class="form-row">
-                                        <form action="controller" method="get">
-                                            <input type="hidden" name="command" value="edit_number_of_room">
-                                            <input type="hidden" name="id" value="${nor.id}">
-                                            <button class="btn btn-primary" type="submit">${edit}</button>
-                                        </form>
-                                        <form action="controller" method="post">
-                                            <input type="hidden" name="command" value="delete_nob">
-                                            <input type="hidden" name="id" value="${nor.id}">
-                                            <button class="btn btn-danger" type="submit">${delete}</button>
-                                        </form>
-                                    </div>
-                                </td>
                             </tr>
                         </c:forEach>
                         </tbody>

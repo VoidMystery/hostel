@@ -17,12 +17,19 @@ public interface ApartmentService {
     List<Apartment> getApartmentList() throws ServiceException;
 
     Apartment findApartmentById(int id) throws ServiceException;
+    Apartment findApartmentByRoomNumber(int roomNumber) throws ServiceException;
 
     boolean saveApartment(String apartmentNumber, String floor, String numberOfBedsId, String apartmentTypeId,
                           String numberOfRoomsId, String balcony, String price) throws ServiceException;
 
+    boolean saveApartmentType(String type) throws ServiceException;
+    boolean saveNumberOfBeds(int nob) throws ServiceException;
+    boolean saveNumberOfRooms(int nor) throws ServiceException;
+
     boolean editApartment(String id, String apartmentNumber, String floor, String numberOfBedsId, String apartmentTypeId,
                           String numberOfRoomsId, String balcony, String price) throws ServiceException;
+
+    boolean deactivateApartment(int id) throws ServiceException;
 
     boolean updateApartmentType(int id, String type) throws ServiceException;
 

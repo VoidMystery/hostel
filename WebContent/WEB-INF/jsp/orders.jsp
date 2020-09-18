@@ -13,18 +13,21 @@
 <jsp:include page="navigate.jsp"/>
 <fmt:setLocale value="${sessionScope.local}"/>
 <fmt:setBundle basename="local" var="loc"/>
-<fmt:message bundle="${loc}" key="local.apartment.apartment_number" var="apartment_number"/>
+<fmt:message bundle="${loc}" key="local.order.order_number" var="order_number"/>
 <fmt:message bundle="${loc}" key="local.order.beginning_date" var="beginning_date"/>
 <fmt:message bundle="${loc}" key="local.order.end_date" var="end_date"/>
 <fmt:message bundle="${loc}" key="local.order.status" var="status"/>
 <fmt:message bundle="${loc}" key="local.order.price" var="price"/>
 <fmt:message bundle="${loc}" key="local.action.confirm_payment" var="confirm_payment"/>
-
+<fmt:message bundle="${loc}" key="local.action.add_service" var="add_service"/>
+<jsp:useBean id="date" class="java.util.Date"/>
+<fmt:formatDate value="${date}" var="now" pattern="yyyy-MM-dd"/>
 <div id="main" class="main">
     <br>
     <table class="table-secondary table-bordered">
         <thead>
         <tr>
+            <td>${order_number}</td>
             <td>${apartment_number}</td>
             <td>${beginning_date}</td>
             <td>${end_date}</td>
@@ -38,6 +41,13 @@
         <tbody>
         <c:forEach var="o" items="${requestScope.orders}">
             <tr>
+                <td>
+                    <form action="controller" method="get">
+                        <input type="hidden" name="command" value="order_details">
+                        <input type="hidden" name="id" value="${o.id}">
+                        <button class="btn btn-link" type="submit">${o.id}</button>
+                    </form>
+                </td>
                 <td>${o.apartmentNumber}</td>
                 <td>${o.beginDate}</td>
                 <td>${o.endDate}</td>

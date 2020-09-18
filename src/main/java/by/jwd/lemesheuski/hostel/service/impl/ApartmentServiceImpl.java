@@ -4,12 +4,12 @@ import by.jwd.lemesheuski.hostel.bean.Apartment;
 import by.jwd.lemesheuski.hostel.bean.ApartmentType;
 import by.jwd.lemesheuski.hostel.bean.NumberOfBeds;
 import by.jwd.lemesheuski.hostel.bean.NumberOfRooms;
-import by.jwd.lemesheuski.hostel.controller.command.impl.post.apartment.EditApartment;
 import by.jwd.lemesheuski.hostel.dao.ApartmentDao;
 import by.jwd.lemesheuski.hostel.dao.DAOException;
 import by.jwd.lemesheuski.hostel.dao.DAOProvider;
 import by.jwd.lemesheuski.hostel.service.ApartmentService;
 import by.jwd.lemesheuski.hostel.service.ServiceException;
+import by.jwd.lemesheuski.hostel.service.validator.ApartmentServiceValidator;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -71,20 +71,66 @@ public class ApartmentServiceImpl implements ApartmentService {
         NumberOfBeds numberOfBeds = new NumberOfBeds();
         ApartmentType apartmentType = new ApartmentType();
 
-        apartment.setRoomNumber(Integer.parseInt(apartmentNumber));
-        apartment.setFloor(Integer.parseInt(floor));
+        int iApartmentNumber = Integer.parseInt(apartmentNumber);
+        int iFloor = Integer.parseInt(floor);
+        int iNumberOfBedsId = Integer.parseInt(numberOfBedsId);
+        int iApartmentTypeId = Integer.parseInt(apartmentTypeId);
+        int iNumberOfRoomsId = Integer.parseInt(numberOfRoomsId);
+        double dPrice = Double.parseDouble(price);
+
+        if(!ApartmentServiceValidator.isApartmentValid(apartmentNumber, iFloor, iNumberOfBedsId,
+                iApartmentTypeId, iNumberOfRoomsId, dPrice)){
+            return false;
+        }
+
+        apartment.setRoomNumber(iApartmentNumber);
+        apartment.setFloor(iFloor);
+
         if(balcony==null){
             apartment.setBalcony(false);
         }else if(balcony.equals("on")){
             apartment.setBalcony(true);
         }
-        apartment.setPrice(Double.parseDouble(price));
 
-        numberOfBeds.setId(Integer.parseInt(numberOfBedsId));
-        numberOfRooms.setId(Integer.parseInt(numberOfRoomsId));
-        apartmentType.setId(Integer.parseInt(apartmentTypeId));
+        apartment.setPrice(dPrice);
+        numberOfBeds.setId(iNumberOfBedsId);
+        numberOfRooms.setId(iNumberOfRoomsId);
+        apartmentType.setId(iApartmentTypeId);
         try {
             return apartmentDao.saveApartment(apartment, apartmentType, numberOfBeds, numberOfRooms);
+        }catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean saveApartmentType(String type) throws ServiceException {
+        try{
+            return apartmentDao.saveApartmentType(type);
+        }catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean saveNumberOfBeds(int nob) throws ServiceException {
+        if(nob < 0){
+            return false;
+        }
+        try{
+            return apartmentDao.saveNumberOfBeds(nob);
+        }catch (DAOException e){
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public boolean saveNumberOfRooms(int nor) throws ServiceException {
+        if(nor < 0){
+            return false;
+        }
+        try{
+            return apartmentDao.saveNumberOfRooms(nor);
         }catch (DAOException e){
             throw new ServiceException(e);
         }
@@ -105,25 +151,31 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Override
     public boolean updateNumberOfRooms(int id, int rooms) throws ServiceException {
         NumberOfRooms numberOfRooms = new NumberOfRooms();
-        numberOfRooms.setId(id);
-        numberOfRooms.setRooms(rooms);
-        try{
-            return apartmentDao.updateNumberOfRooms(numberOfRooms);
-        }catch (DAOException e){
-            throw new ServiceException(e);
+        if(rooms>0 && rooms<5) {
+            numberOfRooms.setId(id);
+            numberOfRooms.setRooms(rooms);
+            try {
+                return apartmentDao.updateNumberOfRooms(numberOfRooms);
+            } catch (DAOException e) {
+                throw new ServiceException(e);
+            }
         }
+        return false;
     }
 
     @Override
     public boolean updateNumberOfBeds(int id, int beds) throws ServiceException {
         NumberOfBeds numberOfBeds = new NumberOfBeds();
-        numberOfBeds.setId(id);
-        numberOfBeds.setBeds(beds);
-        try{
-            return apartmentDao.updateNumberOfBeds(numberOfBeds);
-        }catch (DAOException e){
-            throw new ServiceException(e);
+        if(beds>0 && beds<10) {
+            numberOfBeds.setId(id);
+            numberOfBeds.setBeds(beds);
+            try {
+                return apartmentDao.updateNumberOfBeds(numberOfBeds);
+            } catch (DAOException e) {
+                throw new ServiceException(e);
+            }
         }
+        return false;
     }
 
     @Override
@@ -171,6 +223,17 @@ public class ApartmentServiceImpl implements ApartmentService {
     }
 
     @Override
+    public Apartment findApartmentByRoomNumber(int roomNumber) throws ServiceException {
+        Apartment apartment;
+        try{
+            apartment = apartmentDao.findApartmentByRoomNumber(roomNumber);
+        }catch (DAOException e){
+            throw new ServiceException(e);
+        }
+        return apartment;
+    }
+
+    @Override
     public boolean editApartment(String id, String apartmentNumber, String floor, String numberOfBedsId,
                                  String apartmentTypeId, String numberOfRoomsId,
                                  String balcony, String price) throws ServiceException{
@@ -179,23 +242,47 @@ public class ApartmentServiceImpl implements ApartmentService {
         NumberOfBeds numberOfBeds = new NumberOfBeds();
         ApartmentType apartmentType = new ApartmentType();
 
-        apartment.setId(Integer.parseInt(id));
-        apartment.setRoomNumber(Integer.parseInt(apartmentNumber));
-        apartment.setFloor(Integer.parseInt(floor));
+        int iId = Integer.parseInt(id);
+        int iApartmentNumber = Integer.parseInt(apartmentNumber);
+        int iFloor = Integer.parseInt(floor);
+        int iNumberOfBedsId = Integer.parseInt(numberOfBedsId);
+        int iApartmentTypeId = Integer.parseInt(apartmentTypeId);
+        int iNumberOfRoomsId = Integer.parseInt(numberOfRoomsId);
+        double dPrice = Double.parseDouble(price);
+
+        if(!ApartmentServiceValidator.isApartmentValid(apartmentNumber, iFloor, iNumberOfBedsId,
+                iApartmentTypeId, iNumberOfRoomsId, dPrice)){
+            return false;
+        }
+
+        apartment.setId(iId);
+        apartment.setRoomNumber(iApartmentNumber);
+        apartment.setFloor(iFloor);
         if(balcony==null){
             apartment.setBalcony(false);
         }else if(balcony.equals("on")){
             apartment.setBalcony(true);
         }
-        apartment.setPrice(Double.parseDouble(price));
+        apartment.setPrice(dPrice);
 
-        numberOfBeds.setId(Integer.parseInt(numberOfBedsId));
-        numberOfRooms.setId(Integer.parseInt(numberOfRoomsId));
-        apartmentType.setId(Integer.parseInt(apartmentTypeId));
+        numberOfBeds.setId(iNumberOfBedsId);
+        numberOfRooms.setId(iNumberOfRoomsId);
+        apartmentType.setId(iApartmentTypeId);
         try {
             return apartmentDao.updateApartment(apartment, apartmentType, numberOfBeds, numberOfRooms);
         }catch (DAOException e){
             throw new ServiceException(e);
         }
+    }
+
+    @Override
+    public boolean deactivateApartment(int id) throws ServiceException {
+        boolean status;
+        try{
+            status = apartmentDao.deactivateApartment(id);
+        }catch (DAOException e){
+            throw new ServiceException(e);
+        }
+        return status;
     }
 }

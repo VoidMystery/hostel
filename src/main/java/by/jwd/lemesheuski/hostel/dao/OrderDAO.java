@@ -12,5 +12,7 @@ public interface OrderDAO {
     boolean addNewOrder(int id, String login, LocalDate beginningDate, LocalDate endDate) throws DAOException;
     List<Order> findAllOrders() throws DAOException;
     Order findOrderById(int id) throws DAOException;
+    Order findOrderBySHOId(int id) throws DAOException;
     boolean updateOrderById(Order order) throws DAOException;
+    void createEventOnOrderDeleting() throws DAOException;
 }

@@ -22,7 +22,7 @@ public class EditApartment implements ICommand {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String role = (String) request.getSession().getAttribute(Params.ROLE);
-        if (role.equals("ROLE_ADMIN")) {
+        if (role != null && role.equals("ROLE_ADMIN")) {
             String id = request.getParameter("id");
             String apartmentNumber = request.getParameter("apartment_number");
             String floor = request.getParameter("floor");
@@ -32,8 +32,8 @@ public class EditApartment implements ICommand {
             String balcony = request.getParameter("balcony");
             String price = request.getParameter("price");
             try {
-                apartmentService.editApartment(id, apartmentNumber,floor,numberOfBedsId,apartmentTypeId,numberOfRoomsId,
-                        balcony,price);
+                apartmentService.editApartment(id, apartmentNumber, floor, numberOfBedsId, apartmentTypeId, numberOfRoomsId,
+                        balcony, price);
             } catch (ServiceException e) {
                 throw new CommandException(e);
             }

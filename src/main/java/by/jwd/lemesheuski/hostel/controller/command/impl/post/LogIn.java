@@ -18,8 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LogIn implements ICommand {
 
-    private static final Logger log = Logger.getLogger(GetApartmentsWithDate.class);
-
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
 
@@ -31,7 +29,6 @@ public class LogIn implements ICommand {
             if(request.getSession().getAttribute(Params.ROLE) == null){
 
                 String role = userService.auth(login, password);
-                log.info(role);
                 if (role==null) {
                     request.setAttribute(ErrorMessageName.WRONG_LOGIN_OR_PASSWORD.name(), true);
                     return new Router(JspPageName.LOG_IN_PAGE, RouterType.FORWARD);

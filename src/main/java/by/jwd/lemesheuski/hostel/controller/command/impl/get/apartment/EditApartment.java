@@ -4,6 +4,7 @@ import by.jwd.lemesheuski.hostel.controller.JspPageName;
 import by.jwd.lemesheuski.hostel.controller.command.CommandException;
 import by.jwd.lemesheuski.hostel.controller.command.ICommand;
 import by.jwd.lemesheuski.hostel.controller.command.RedirectCommandParam;
+import by.jwd.lemesheuski.hostel.controller.command.StringValidator;
 import by.jwd.lemesheuski.hostel.controller.command.impl.Params;
 import by.jwd.lemesheuski.hostel.controller.router.Router;
 import by.jwd.lemesheuski.hostel.controller.router.RouterType;
@@ -20,17 +21,18 @@ public class EditApartment implements ICommand {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String role = (String) request.getSession().getAttribute(Params.ROLE);
-        String id = request.getParameter("id");
+        String roomNumber = request.getParameter("room_number");
         if (role!=null && role.equals("ROLE_ADMIN")) {
             request.setAttribute(Params.ROLE, role);
-            try {
-                request.setAttribute(Params.APARTMENT, apartmentService.findApartmentById(Integer.parseInt(id)));
-                request.setAttribute(Params.APARTMENT_TYPES, apartmentService.getApartmentTypeList());
-                request.setAttribute(Params.NUMBER_OF_ROOMS, apartmentService.getNumberOfRoomsList());
-                request.setAttribute(Params.NUMBER_OF_BEDS, apartmentService.getNumberOfBedsList());
-            } catch (ServiceException e) {
-
-                throw new CommandException(e);
+            if(StringValidator.isStringInteger(roomNumber)) {
+                try {
+                    request.setAttribute(Params.APARTMENT, apartmentService.findApartmentByRoomNumber(Integer.parseInt(roomNumber)));
+                    request.setAttribute(Params.APARTMENT_TYPES, apartmentService.getApartmentTypeList());
+                    request.setAttribute(Params.NUMBER_OF_ROOMS, apartmentService.getNumberOfRoomsList());
+                    request.setAttribute(Params.NUMBER_OF_BEDS, apartmentService.getNumberOfBedsList());
+                } catch (ServiceException e) {
+                    throw new CommandException(e);
+                }
             }
             return new Router(JspPageName.EDIT_APARTMENT, RouterType.FORWARD);
         }

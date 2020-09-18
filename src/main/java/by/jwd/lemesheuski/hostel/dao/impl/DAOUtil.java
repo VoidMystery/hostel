@@ -25,7 +25,7 @@ public class DAOUtil {
         }
     }
 
-    public static void finallyClose(Connection con, PreparedStatement st) {
+    public static void finallyClose(Connection con, Statement st) {
         if (st == null) {
             if (con != null) {
                 ConnectionPool.getInstance().closeConnection(con);

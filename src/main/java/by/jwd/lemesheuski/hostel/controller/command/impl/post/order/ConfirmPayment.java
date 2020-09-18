@@ -1,9 +1,9 @@
 package by.jwd.lemesheuski.hostel.controller.command.impl.post.order;
 
-import by.jwd.lemesheuski.hostel.controller.JspPageName;
 import by.jwd.lemesheuski.hostel.controller.command.CommandException;
 import by.jwd.lemesheuski.hostel.controller.command.ICommand;
 import by.jwd.lemesheuski.hostel.controller.command.RedirectCommandParam;
+import by.jwd.lemesheuski.hostel.controller.command.StringValidator;
 import by.jwd.lemesheuski.hostel.controller.command.impl.Params;
 import by.jwd.lemesheuski.hostel.controller.router.Router;
 import by.jwd.lemesheuski.hostel.controller.router.RouterType;
@@ -24,10 +24,12 @@ public class ConfirmPayment implements ICommand {
 
         if (role != null && role.equals("ROLE_ADMIN")) {
             request.setAttribute(Params.ROLE, role);
-            try {
-               orderService.updateOrderStatusById(Integer.parseInt(id));
-            } catch (ServiceException e) {
-                throw new CommandException(e);
+            if(StringValidator.isStringInteger(id)) {
+                try {
+                    orderService.updateOrderStatusById(Integer.parseInt(id));
+                } catch (ServiceException e) {
+                    throw new CommandException(e);
+                }
             }
             return new Router(request.getRequestURI() + "?" + RedirectCommandParam.ORDERS, RouterType.REDIRECT);
         }

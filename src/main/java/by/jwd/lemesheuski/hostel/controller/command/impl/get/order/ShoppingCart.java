@@ -26,11 +26,11 @@ public class ShoppingCart implements ICommand {
         String role = (String) request.getSession().getAttribute(Params.ROLE);
         List<Order> orderList;
 
-        if (role.equals("ROLE_USER")) {
+        if (role != null && role.equals("ROLE_USER")) {
             try {
-                orderList=orderService.findOrdersByLogin((String)request.getSession().getAttribute(Params.LOGIN));
+                orderList = orderService.findOrdersByLogin((String) request.getSession().getAttribute(Params.LOGIN));
                 request.setAttribute(Params.ORDERS, orderList);
-            }catch (ServiceException e){
+            } catch (ServiceException e) {
                 throw new CommandException(e);
             }
             return new Router(JspPageName.ORDERS, RouterType.FORWARD);

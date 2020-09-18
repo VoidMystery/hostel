@@ -34,7 +34,7 @@
                                 <label for="apartment_number">${apartment_number}:&nbsp;&nbsp;&nbsp;</label>
                                 <input class="form-control" id="apartment_number" type="text"
                                        placeholder="${apartment_number}" value="${requestScope.apartment.roomNumber}"
-                                       name="apartment_number"/>
+                                       name="apartment_number" readonly/>
                             </div>
                             <div class="form-row">
                                 <label for="floor">${floor}:&nbsp;&nbsp;&nbsp;</label>

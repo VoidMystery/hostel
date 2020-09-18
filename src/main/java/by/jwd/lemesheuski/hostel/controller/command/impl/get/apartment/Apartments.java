@@ -21,7 +21,7 @@ public class Apartments implements ICommand {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String role = (String) request.getSession().getAttribute(Params.ROLE);
-        if (role.equals("ROLE_ADMIN")) {
+        if (role!=null && role.equals("ROLE_ADMIN")) {
             request.setAttribute(Params.ROLE, role);
             try {
                 request.setAttribute(Params.APARTMENTS, apartmentService.getApartmentList());

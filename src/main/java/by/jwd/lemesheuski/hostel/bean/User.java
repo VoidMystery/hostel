@@ -10,7 +10,8 @@ public class User implements Serializable {
     private String name;
     private String patronymic;
     private String login;
-    private String discount;
+    private int discount;
+    private double moneySpent;
 
 
     public User() {
@@ -56,12 +57,20 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public String getDiscount() {
+    public int getDiscount() {
         return discount;
     }
 
-    public void setDiscount(String discount) {
+    public void setDiscount(int discount) {
         this.discount = discount;
+    }
+
+    public double getMoneySpent() {
+        return moneySpent;
+    }
+
+    public void setMoneySpent(double moneySpent) {
+        this.moneySpent = moneySpent;
     }
 
     @Override
@@ -72,21 +81,39 @@ public class User implements Serializable {
         User user = (User) o;
 
         if (id != user.id) return false;
+        if (discount != user.discount) return false;
+        if (Double.compare(user.moneySpent, moneySpent) != 0) return false;
         if (surname != null ? !surname.equals(user.surname) : user.surname != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (patronymic != null ? !patronymic.equals(user.patronymic) : user.patronymic != null) return false;
-        if (login != null ? !login.equals(user.login) : user.login != null) return false;
-        return discount != null ? discount.equals(user.discount) : user.discount == null;
+        return login != null ? login.equals(user.login) : user.login == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result;
+        long temp;
+        result = id;
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (patronymic != null ? patronymic.hashCode() : 0);
         result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (discount != null ? discount.hashCode() : 0);
+        result = 31 * result + discount;
+        temp = Double.doubleToLongBits(moneySpent);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", surname='" + surname + '\'' +
+                ", name='" + name + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", login='" + login + '\'' +
+                ", discount='" + discount + '\'' +
+                ", moneySpent='" + moneySpent + '\'' +
+                '}';
     }
 }

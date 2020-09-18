@@ -1,7 +1,6 @@
 package by.jwd.lemesheuski.hostel.controller.command_helper;
 
 import by.jwd.lemesheuski.hostel.controller.command.ICommand;
-import by.jwd.lemesheuski.hostel.controller.command_helper.CommandName;
 
 import java.util.Map;
 

@@ -1,7 +1,9 @@
 package by.jwd.lemesheuski.hostel.service;
 
+import by.jwd.lemesheuski.hostel.bean.RoomService;
 import by.jwd.lemesheuski.hostel.service.impl.ApartmentServiceImpl;
 import by.jwd.lemesheuski.hostel.service.impl.OrderServiceImpl;
+import by.jwd.lemesheuski.hostel.service.impl.RoomServiceServiceImpl;
 import by.jwd.lemesheuski.hostel.service.impl.UserServiceImpl;
 
 public class ServiceProvider {
@@ -15,6 +17,7 @@ public class ServiceProvider {
     private final UserService userService = new UserServiceImpl();
     private final ApartmentService apartmentService = new ApartmentServiceImpl();
     private final OrderService orderService = new OrderServiceImpl();
+    private final RoomServiceService roomServiceService = new RoomServiceServiceImpl();
 
     public UserService getUserService(){
         return userService;
@@ -26,5 +29,9 @@ public class ServiceProvider {
 
     public OrderService getOrderService() {
         return orderService;
+    }
+
+    public RoomServiceService getRoomServiceService() {
+        return roomServiceService;
     }
 }

@@ -8,4 +8,6 @@ public class RedirectCommandParam {
     public static final String ROOM_PARAMS = "command=set_room_params";
     public static final String ORDERS = "command=orders";
     public static final String APARTMENTS = "command=apartments";
+    public static final String ALL_ROOM_SERVICES = "command=all_room_services";
+    public static final String PROFILE = "command=profile";
 }

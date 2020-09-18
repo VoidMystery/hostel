@@ -22,11 +22,10 @@ public class Reservation implements ICommand {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String role = (String) request.getSession().getAttribute(Params.ROLE);
-        if (role.equals("ROLE_USER")) {
+        if (role!=null && role.equals("ROLE_USER")) {
             String id= request.getParameter("id");
             String beginningDateStr = request.getParameter("beginning_date");
             String endDateStr = request.getParameter("end_date");
-            log.info(id+beginningDateStr+endDateStr);
             LocalDate beginningDate = LocalDate.parse(beginningDateStr);
             LocalDate endDate = LocalDate.parse(endDateStr);
             try {

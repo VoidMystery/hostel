@@ -124,4 +124,18 @@ public class Order implements Serializable {
         result = 31 * result + apartmentNumber;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", beginDate=" + beginDate +
+                ", endDate=" + endDate +
+                ", price=" + price +
+                ", userId=" + userId +
+                ", status='" + status + '\'' +
+                ", apartmentId=" + apartmentId +
+                ", apartmentNumber=" + apartmentNumber +
+                '}';
+    }
 }

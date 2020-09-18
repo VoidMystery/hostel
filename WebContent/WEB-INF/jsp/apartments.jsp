@@ -22,19 +22,19 @@
 <fmt:message bundle="${loc}" key="local.apartment.price" var="price"/>
 <fmt:message bundle="${loc}" key="local.action.add" var="add"/>
 <fmt:message bundle="${loc}" key="local.action.edit" var="edit"/>
-<fmt:message bundle="${loc}" key="local.action.delete" var="delete"/>
+<fmt:message bundle="${loc}" key="local.action.deactivate" var="deactivate"/>
 <fmt:message bundle="${loc}" key="local.action.reservation" var="reservation"/>
 
 <div id="main" class="main">
     <br>
     <c:if test="${requestScope.role eq 'ROLE_ADMIN'}">
-    <div style="text-align: center">
-        <form action="controller" method="get">
-            <input type="hidden" name="command" value="add_apartment">
-            <button class="btn btn-primary" type="submit">${add}</button>
-        </form>
-    </div>
-    <br>
+        <div style="text-align: center">
+            <form action="controller" method="get">
+                <input type="hidden" name="command" value="add_apartment">
+                <button class="btn btn-primary" type="submit">${add}</button>
+            </form>
+        </div>
+        <br>
     </c:if>
     <table class="table-secondary table-bordered">
         <thead>
@@ -63,18 +63,24 @@
                 <td>${apartment.price}</td>
                 <td>
                     <c:if test="${requestScope.role eq 'ROLE_ADMIN'}">
-                    <div class="form-row">
-                        <form action="controller" method="get">
-                            <input type="hidden" name="command" value="edit_apartment">
-                            <input type="hidden" name="id" value="${apartment.id}">
-                            <button class="btn btn-primary" type="submit">${edit}</button>
-                        </form>
-                        <form action="controller" method="post">
-                            <input type="hidden" name="command" value="delete_apartment">
-                            <input type="hidden" name="id" value="${apartment.id}">
-                            <button class="btn btn-danger" type="submit">${delete}</button>
-                        </form>
-                    </div>
+                        <c:if test="${empty apartment.status}">
+                            <div class="form-row">
+                                <form action="controller" method="get">
+                                    <input type="hidden" name="command" value="edit_apartment">
+                                    <input type="hidden" name="id" value="${apartment.id}">
+                                    <button class="btn btn-primary" type="submit">${edit}</button>
+                                </form>
+                            </div>
+                        </c:if>
+                        <c:if test="${empty apartment.status}">
+                            <div class="form-row">
+                                <form action="controller" method="post">
+                                    <input type="hidden" name="command" value="deactivate_apartment">
+                                    <input type="hidden" name="id" value="${apartment.id}">
+                                    <button class="btn btn-primary" type="submit">${deactivate}</button>
+                                </form>
+                            </div>
+                        </c:if>
                     </c:if>
                     <c:if test="${requestScope.role eq 'ROLE_USER'}">
                         <div class="form-row">
